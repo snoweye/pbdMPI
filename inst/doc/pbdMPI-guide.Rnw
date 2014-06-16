@@ -1,115 +1,61 @@
-%\VignetteIndexEntry{pbdMPI-guide}
-
-\documentclass[article,shortnames,nojss]{pbdMPI-include/jss}
-
+%\VignetteIndexEntry{pbdDMAT-guide}
+\documentclass[11pt]{article}
+\usepackage[margin=1.1in]{geometry}
+\newcommand{\thispackage}{\pkg{pbdMPI}\xspace}
 \newcommand{\mpiversion}{0.2-3}
+\input{./include/preamble}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% declarations for jss.cls %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%% almost as usual
-\author{
-\begin{minipage}{6in}
+\mytitle{Guide to the\\ \thispackage Package}
+\mysubtitle{A Simplified Interface to MPI}
+\myversion{\mpiversion}
+\myauthor{
 \centering
-Wei-Chen Chen$^1$, George Ostrouchov$^{2,3}$, Drew Schmidt$^3$, \\
-Pragneshkumar Patel$^3$, Hao Yu$^4$
-\end{minipage}
-\\
-\\
-$^1$Department of Ecology and Evolutionary Biology, \\
-University of Tennessee, \\
-Knoxville, TN, USA \\
-\\
-$^2$Computer Science and Mathematics Division, \\
-Oak Ridge National Laboratory, \\
-Oak Ridge, TN, USA \\
-\\
-$^3$National Institute for Computational Sciences, \\
-University of Tennessee, \\
-Knoxville, TN, USA \\
-\\
-$^4$University of Western Ontario, \\
-London, Ontario, Canada \\
-%\\
-%\\
-%\today
+Wei-Chen Chen \\
+\textit{Department of Ecology and Evolutionary Biology \\
+University of Tennessee}
+\\[.4cm]
+%
+George Ostrouchov \\
+\textit{Computer Science and Mathematics Division, \\
+Oak Ridge National Laboratory}
+\\[.4cm]
+%
+Drew Schmidt \\
+\textit{National Institute for Computational Sciences \\
+University of Tennessee}
+\\[.4cm]
+%
+Pragneshkumar Patel \\
+\textit{National Institute for Computational Sciences \\
+University of Tennessee}
+\\[.4cm]
+%
+Hao Yu \\
+\textit{University of Western Ontario, \\
+London, Ontario, Canada}
 }
-\title{A Quick Guide for the \pkg{pbdMPI} Package {\small (Ver. \mpiversion)}}
 
 
-%% for pretty printing and a nice hypersummary also set:
-\Plainauthor{Wei-Chen Chen, George Ostrouchov, Drew Schmidt, Pragneshkumar Patel, Hao Yu} %% comma-separated
-\Plaintitle{Quick Guide for pbdMPI (Ver. \mpiversion)} %% without formatting
-\Shorttitle{Quick Guide for pbdMPI (Ver. \mpiversion)} %% a short title (if necessary)
-
-%% an abstract and keywords
-%\Abstract{
-%}
-%\Keywords{}
-%\Plainkeywords{} %% without formatting
-%% at least one keyword must be supplied
-
-%% publication information
-%% NOTE: Typically, this can be left commented and will be filled out by the technical editor
-%% \Volume{13}
-%% \Issue{9}
-%% \Month{September}
-%% \Year{2004}
-%% \Submitdate{2004-09-29}
-%% \Acceptdate{2004-09-29}
-
-%% The address of (at least) one author should be given
-%% in the following format:
-\Address{
-  Wei-Chen Chen\\
-  E-mail: \email{wccsnow@gmail.com}\\
-  URL: \url{http://thirteen-01.stat.iastate.edu/snoweye/hpsc/}
-}
-%% It is also possible to add a telephone and fax number
-%% before the e-mail in the following format:
-%% Telephone: +43/1/31336-5053
-%% Fax: +43/1/31336-734
-
-%% for those who use Sweave please include the following line (with % symbols):
-%% need no \usepackage{Sweave.sty}
-
-%% end of declarations %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-\input{./pbdMPI-include/00-preamble}
 
 \begin{document}
 
-\pagenumbering{roman}
-\tableofcontents
+\makefirstfew
 
-%\newpage
-\input{./pbdMPI-include/01-copyright}
-
-%% include your article here, just as usual
-%% Note that you should use the \pkg{}, \proglang{} and \code{} commands.
-
-\newpage
-\input{./pbdMPI-include/01-acknowledgement}
-
-\newpage
-\pagenumbering{arabic}
-\setcounter{page}{1}
-
-\input{./pbdMPI-include/01-introduction}
-\input{./pbdMPI-include/02-performance}
-\input{./pbdMPI-include/05-analog}
-\input{./pbdMPI-include/06-longvector}
-\input{./pbdMPI-include/07-simpleio}
-\input{./pbdMPI-include/08-simplepairs}
-\input{./pbdMPI-include/04-windows_msmpi}
-\input{./pbdMPI-include/03-faq}
+\input{./include/01-introduction}
+\input{./include/02-performance}
+\input{./include/05-analog}
+\input{./include/06-longvector}
+\input{./include/07-simpleio}
+\input{./include/08-simplepairs}
+\input{./include/04-windows_msmpi}
+\input{./include/03-faq}
 
 \newpage
 \phantomsection
 \addcontentsline{toc}{section}{References}
-\bibliography{./pbdMPI-include/pbdMPI}
+\bibliography{./include/pbdMPI}
+\bibliographystyle{plainnat}
 
 \end{document}
 
