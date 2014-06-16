@@ -1,5 +1,9 @@
 #!/bin/sh
 
+PKGVER=`grep "Version:" ../DESCRIPTION | sed -e "s/Version: //"`
+sed -i -e "s/demoversion}{[0-9][.][0-9]-[0-9]}/demoversion}{${PKGVER}}/" cover.tex
+
+
 rm *.aux *.bbl *.blg *.log *.out *.toc
 pdflatex pbdMPI-guide.Rnw
 bibtex pbdMPI-guide
