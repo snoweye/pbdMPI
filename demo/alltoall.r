@@ -7,13 +7,12 @@ init()
 .comm.rank <- comm.rank()
 
 ### Examples.
-n <- as.integer(2)
-x <- 1:(.comm.size * n)
+x <- get.jid(n=4*.comm.size)
 comm.cat("Original x:\n", quiet = TRUE)
 comm.print(x, all.rank = TRUE)
 
 x <- as.integer(x)
-y <- spmd.alltoall.integer(x, integer(length(x)), n, n)
+y <- spmd.alltoall.integer(x, 2)
 comm.cat("\nAlltoall y:\n", quiet = TRUE)
 comm.print(y, all.rank = TRUE)
 
