@@ -7,7 +7,7 @@ init()
 .comm.rank <- comm.rank()
 
 ### Examples.
-x <- get.jid(n=4*.comm.size)
+x <- get.jid(n=2*.comm.size^2)
 comm.cat("Original x:\n", quiet = TRUE)
 comm.print(x, all.rank = TRUE)
 

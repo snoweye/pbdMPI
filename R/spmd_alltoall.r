@@ -1,7 +1,7 @@
 ### For alltoall and basic types.
 spmd.alltoall.integer <- function(x.send, send.count, comm = .SPMD.CT$comm){
-  .comm.size <- comm.size()
-  if (.comm.size * send.count > length(x.send))
+  .comm.size <- comm.size(comm=comm)
+  if ((.comm.size * send.count) %% length(x.send) != 0)
     comm.warning("TODO")
   
   .Call("spmd_alltoall_integer", x.send, as.integer(send.count), as.integer(.comm.size), as.integer(comm), PACKAGE = "pbdMPI")
