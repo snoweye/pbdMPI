@@ -125,7 +125,7 @@ static const R_CallMethodDef callMethods[] = {
 
 	/* In file "spmd_alltoall.c". */
 	{"spmd_alltoall_integer", (DL_FUNC) &spmd_alltoall_integer, 4},
-	{"spmd_alltoall_double", (DL_FUNC) &spmd_alltoall_double, 5},
+	{"spmd_alltoall_double", (DL_FUNC) &spmd_alltoall_double, 4},
 	{"spmd_alltoall_raw", (DL_FUNC) &spmd_alltoall_raw, 5},
 
 	/* In file "spmd_alltoallv.c". */

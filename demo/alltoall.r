@@ -12,7 +12,7 @@ comm.cat("Original x:\n", quiet = TRUE)
 comm.print(x, all.rank = TRUE)
 
 x <- as.integer(x)
-y <- spmd.alltoall.integer(x, 2)
+y <- alltoall(x, 2)
 comm.cat("\nAlltoall y:\n", quiet = TRUE)
 comm.print(y, all.rank = TRUE)
 

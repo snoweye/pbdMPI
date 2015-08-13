@@ -199,8 +199,7 @@ SEXP spmd_scatterv_raw(SEXP R_send_data, SEXP R_recv_data,
 
 /* In file "spmd_alltoall.c". */
 SEXP spmd_alltoall_integer(SEXP R_send_data, SEXP R_send_count, SEXP comm_size, SEXP R_comm);
-SEXP spmd_alltoall_double(SEXP R_send_data, SEXP R_recv_data,
-                SEXP R_send_count, SEXP R_recv_count, SEXP R_comm);
+SEXP spmd_alltoall_double(SEXP R_send_data, SEXP R_send_count, SEXP comm_size, SEXP R_comm);
 SEXP spmd_alltoall_raw(SEXP R_send_data, SEXP R_recv_data,
                 SEXP R_send_count, SEXP R_recv_count, SEXP R_comm);
 
