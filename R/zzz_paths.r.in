@@ -1,0 +1,7 @@
+mpi_cppflags <- function(){
+  cat("@PKG_CPPFLAGS@\n")
+}
+
+mpi_libs <- function(){
+  cat("@PKG_LIBS@\n")
+}

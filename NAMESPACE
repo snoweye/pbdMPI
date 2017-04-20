@@ -84,6 +84,11 @@ export(
   #".pbd_env"
 )
 
+export(
+  "mpi_cppflags",
+  "mpi_libs"
+)
+
 S3method(comm.sort, default)
 S3method(comm.sort, integer)
 S3method(comm.sort, double)
