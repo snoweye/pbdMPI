@@ -12,12 +12,18 @@ r:
 os:
   - osx
 
+### Remove c++ link first before install gcc because of conflicts
+### between TRAVIS and brew
 before_install:
-  - curl -OL https://raw.githubusercontent.com/Homebrew/install/master/install
+  - ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+  - rm -rf /usr/local/include/c++
+  - brew install gcc
   - brew install open-mpi
   - mpiexec --version
-  - mpiexec --showme:incdirs
-  - mpiexec --showme:libdirs
+  - mpicc -showme:incdirs
+  - mpicc -showme:libdirs
+  - mpicc -showme:compile
+  - mpicc -showme:link
   - mpiexec -np 2 hostname
 
 r_packages:
