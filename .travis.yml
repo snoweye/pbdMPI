@@ -14,7 +14,7 @@ os:
 
 before_install:
   - curl -OL https://raw.githubusercontent.com/Homebrew/install/master/install
-  - sudo brew install open-mpi
+  - brew install open-mpi
   - mpiexec -np 2 hostname
 
 r_packages:
