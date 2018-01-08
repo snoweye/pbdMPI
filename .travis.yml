@@ -1,13 +1,13 @@
 language: r
 
-r:
-  # - devel
-  - release
-
 branches:
   only:
     - master
     - osx
+
+r:
+  # - devel
+  - release
 
 os:
   - osx
