@@ -1,20 +1,19 @@
-language: r
+language: c
 
 branches:
   only:
     - master
     - osx
 
-r:
-  # - devel
-  - release
-
 os:
   - osx
 
-### Remove c++ and gfortran links before install gcc because of conflicts
-### between TRAVIS and brew
 before_install:
+  - curl -OL http://raw.github.com/craigcitro/r-travis/master/scripts/travis-tool.sh
+  - chmod 755 ./travis-tool.sh
+  - ./travis-tool.sh bootstrap
+
+install:
   - ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
   - rm -rf /usr/local/include/c++
   - rm -rf /usr/local/include/gfortran
@@ -27,12 +26,13 @@ before_install:
   - mpicc -showme:link
   - mpiexec -np 2 hostname
 
-r_packages:
-  - rlecuyer
+script:
+  - Rscript -e "install.packages('rlecuyer',repos='http://cran.r-project.org')"
+  - R CMD INSTALL .
 
 sudo: required
 
 notifications:
   email:
-    on_success: never
-    on_failure: never
+    on_success: no
+    on_failure: no
