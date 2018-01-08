@@ -12,11 +12,12 @@ r:
 os:
   - osx
 
-### Remove c++ link first before install gcc because of conflicts
+### Remove c++ and gfortran links before install gcc because of conflicts
 ### between TRAVIS and brew
 before_install:
   - ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
   - rm -rf /usr/local/include/c++
+  - rm -rf /usr/local/include/gfortran
   - brew install gcc
   - brew install open-mpi
   - mpiexec --version
