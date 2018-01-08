@@ -4,19 +4,23 @@ r:
   # - devel
   - release
 
+branches:
+  only:
+    - master
+    - osx
+
 os:
-  - linux
+  - osx
 
 before_install:
-  - sudo apt-get update -q
-  - sudo apt-get install -y -q libopenmpi-dev openmpi-bin
-  - LD_PRELOAD=/usr/lib/openmpi/lib/libmpi.so
+  - curl -OL https://raw.githubusercontent.com/Homebrew/install/master/install
+  - sudo brew install open-mpi
+  - mpiexec -np 2 hostname
 
 r_packages:
   - rlecuyer
 
 sudo: required
-dist: trusty
 
 notifications:
   email:
