@@ -5,6 +5,10 @@ branches:
     - master
     - osx
 
+#r:
+  # - devel
+  # - release
+
 os:
   - osx
 
@@ -12,8 +16,6 @@ before_install:
   - curl -OL http://raw.github.com/craigcitro/r-travis/master/scripts/travis-tool.sh
   - chmod 755 ./travis-tool.sh
   - ./travis-tool.sh bootstrap
-
-install:
   - ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
   - rm -rf /usr/local/include/c++
   - rm -rf /usr/local/include/gfortran
@@ -25,10 +27,20 @@ install:
   - mpicc -showme:compile
   - mpicc -showme:link
   - mpiexec -np 2 hostname
+  - cd ../
+  - R CMD build --no-resave-data --no-manual --no-build-vignettes pbdMPI
+
+# r_packages:
+#   - rlecuyer
+
+install:
+  - Rscript -e "install.packages('rlecuyer',repos='http://cran.r-project.org')"
+  - R CMD check ./pbdMPI_*.tar.gz --as-cran
+  - cat ./pbdMPI.Rcheck/pbdMPI-Ex.Rout
+  - cat ./pbdMPI.Rcheck/pbdMPI-Ex.timings
 
 script:
-  - Rscript -e "install.packages('rlecuyer',repos='http://cran.r-project.org')"
-  - R CMD INSTALL .
+  - R CMD INSTALL ./pbdMPI_*.tar.gz
 
 sudo: required
 
