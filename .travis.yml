@@ -35,7 +35,7 @@ before_install:
 
 install:
   - Rscript -e "install.packages('rlecuyer',repos='http://cran.r-project.org')"
-  - R CMD check ./pbdMPI_*.tar.gz --as-cran
+  - R CMD check ./pbdMPI_*.tar.gz --as-cran --no-manual --no-vignettes
   - cat ./pbdMPI.Rcheck/pbdMPI-Ex.Rout
   - cat ./pbdMPI.Rcheck/pbdMPI-Ex.timings
 
