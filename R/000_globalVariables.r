@@ -9,3 +9,8 @@
 if(getRversion() >= "2.15.1"){
   utils::globalVariables(c(".pbd_env"))
 }
+
+RTYPE_INTEGER = 1L
+RTYPE_DOUBLE = 2L
+RTYPE_RAW = 3L
+RTYPE_OTHER = 4L
