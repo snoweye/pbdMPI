@@ -20,6 +20,7 @@ Imports: rlecuyer, float
 Enhances: pbdPROF, pbdZMQ
 LazyLoad: yes
 LazyData: yes
+StagedInstall: no
 Description: An efficient interface to MPI by utilizing S4
         classes and methods with a focus on Single Program/Multiple Data
         ('SPMD')
