@@ -56,8 +56,8 @@ get.jid(n, method = .pbd_env$SPMD.CT$divide.method[1], all = FALSE,
 }
 \examples{
 %\dontrun{
-### Save code in a file "demo.r" and run with 4 processors by
-### SHELL> mpiexec -np 4 Rscript demo.r
+### Save code in a file "demo.r" and run with 2 processors by
+### SHELL> mpiexec -np 2 Rscript demo.r
 
 spmd.code <- "
 ### Initial.
@@ -84,7 +84,7 @@ comm.print(alljid)
 ### Finish.
 finalize()
 "
-pbdMPI::execmpi(spmd.code, nranks = 4L)
+pbdMPI::execmpi(spmd.code, nranks = 2L)
 %}
 }
 \keyword{utility}

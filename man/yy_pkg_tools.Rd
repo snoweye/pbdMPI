@@ -39,8 +39,8 @@ addr.mpi.comm.ptr(comm.ptr)
 }
 \examples{
 % \dontrun{
-### Save code in a file "demo.r" and run with 4 processors by
-### SHELL> mpiexec -np 4 Rscript demo.r
+### Save code in a file "demo.r" and run with 22processors by
+### SHELL> mpiexec -np 2 Rscript demo.r
 
 spmd.code <- "
 ### Initial.
@@ -58,7 +58,7 @@ addr.mpi.comm.ptr(ptr1.new)
 ### Finish.
 finalize()
 "
-pbdMPI::execmpi(spmd.code = spmd.code, nranks = 4L)
+pbdMPI::execmpi(spmd.code = spmd.code, nranks = 2L)
 %}
 }
 \keyword{utility}
