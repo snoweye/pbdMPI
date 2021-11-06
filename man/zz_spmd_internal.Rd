@@ -27,6 +27,8 @@
 \alias{spmd.bcast.string}
 \alias{spmd.bcast.message}
 \alias{spmd.barrier}
+\alias{spmd.check.type.send}
+\alias{spmd.check.type.recv}
 \alias{spmd.comm.set.errhandler}
 \alias{spmd.comm.is.null}
 \alias{spmd.comm.rank}
@@ -128,7 +130,7 @@
 \description{ All SPMD internal functions }
 \references{
   Programming with Big Data in R Website:
-  \url{http://r-pbd.org/}
+  \url{https://pbdr.org/}
 }
 \author{
   Wei-Chen Chen \email{wccsnow@gmail.com}, George Ostrouchov,
@@ -142,5 +144,8 @@ All examples are run.
 ==========================================================================
 
 ")
+
+### Force "R CMD check" to free memory.
+finalize(mpi.finalize = TRUE)
 }
 \keyword{internal}

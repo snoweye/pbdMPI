@@ -25,6 +25,8 @@
         mpi.type == "MPT"){
       if(mpi.type == "OPENMPI" || mpi.type == "MPT"){
         mpi.libname <- "libmpi"
+      } else if(mpi.type == "IBMMPI"){
+        mpi.libname <- "libmpi_ibm"
       } else{
         mpi.libname <- "libmpich"
       }
@@ -115,7 +117,7 @@
 .onUnload <- function(libpath){
   ### Do not finalize MPI by default, which can cause problem for external API.
   ### Let user take care of shut down business.
-  pbdMPI::spmd.finalize(mpi.finalize = FALSE)
+  pbdMPI::spmd.finalize()
   library.dynam.unload("pbdMPI", libpath)
 
   ### Shared library needs to be unloaded after "pbdMPI.so"
@@ -129,6 +131,8 @@
       mpi.type == "MPT"){
     if(mpi.type == "OPENMPI" || mpi.type == "MPT"){
       mpi.libname <- "libmpi"
+    } else if(mpi.type == "IBMMPI"){
+      mpi.libname <- "libmpi_ibm"
     } else{
       mpi.libname <- "libmpich"
     }

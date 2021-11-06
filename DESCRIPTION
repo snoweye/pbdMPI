@@ -1,6 +1,6 @@
 Package: pbdMPI
-Version: 0.3-5
-Date: 2018-02-25
+Version: 0.4-4
+Date: 2021-11-05
 Title: Programming with Big Data -- Interface to MPI
 Authors@R: c(person("Wei-Chen", "Chen", role = c("aut", "cre"), email =
         "wccsnow@gmail.com"),
@@ -12,11 +12,12 @@ Authors@R: c(person("Wei-Chen", "Chen", role = c("aut", "cre"), email =
         person("Brian", "Ripley", role = "ctb", comment = "Windows HPC Pack
         2012"),
         person("R Core team", role = "ctb", comment = "some functions are
-        modified from the base packages"))
-Depends: R (>= 3.3.0), methods, rlecuyer
-Enhances: pbdPROF, pbdZMQ
+        modified from the base packages"),
+        person("Sebastien", "Lamy de la Chapelle", role="aut", comment = "fix
+        check type for send/recv long vectors"))
+Depends: R (>= 3.5.0), methods
+Imports: rlecuyer, float
 LazyLoad: yes
-LazyData: yes
 Description: An efficient interface to MPI by utilizing S4
         classes and methods with a focus on Single Program/Multiple Data
         ('SPMD')
@@ -26,8 +27,8 @@ SystemRequirements: OpenMPI (>= 1.5.4) on Solaris, Linux, Mac, and
         FreeBSD. MS-MPI (Microsoft MPI v7.1 (SDK) and Microsoft HPC
         Pack 2012 R2 MS-MPI Redistributable Package) on Windows.
 License: Mozilla Public License 2.0
-URL: http://r-pbd.org/
-BugReports: http://group.r-pbd.org/
+URL: https://pbdr.org/
+BugReports: https://github.com/snoweye/pbdMPI/issues
 MailingList: Please send questions and comments regarding pbdR to
         RBigData@gmail.com
 NeedsCompilation: yes
