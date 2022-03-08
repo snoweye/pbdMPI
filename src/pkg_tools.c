@@ -36,6 +36,30 @@ void set_MPI_APTS_in_R(){
 	/* Assign an R object in ".GlobalEnv". */
 	defineVar(install(MPI_APTS_R_NAME), R_apts, R_GlobalEnv);
 
+#if (MPI_APTS_DEBUG & 1) == 1
+	int myrank;
+	MPI_Comm_rank(MPI_COMM_WORLD, &myrank);
+	if(myrank == 0){
+		REprintf("rank: %d, load: %s, func: %s.\n", myrank,
+			LOAD_LOCATION[__LOAD_LOCATION__], __FUNCTION__);
+		REprintf("  ==> original in C.\n");
+		REprintf("  ==> ptr: comm status datatype info request.\n");
+		REprintf("  %s (v): %x %x %x %x %x.\n", __FILE__, comm,
+			status, datatype, info, request);
+		REprintf("  %s (v0): %x %x %x %x %x.\n", __FILE__, comm[0],
+			status[0], datatype[0], info[0], request[0]);
+		REprintf("  %s (a): %x %x %x %x %x.\n", __FILE__, &comm,
+			&status, &datatype, &info, &request);
+		REprintf("  %s (a0): %x %x %x %x %x.\n", __FILE__, &comm[0],
+			&status[0], &datatype[0], &info[0], &request[0]);
+		REprintf("     ==> maxsize: comm status request.\n");
+		REprintf("     %s (v): %d %d %d.\n", __FILE__, COMM_MAXSIZE,
+			STATUS_MAXSIZE, REQUEST_MAXSIZE);
+		REprintf("     %s (a): %x %x %x.\n", __FILE__, &COMM_MAXSIZE,
+			&STATUS_MAXSIZE, &REQUEST_MAXSIZE);
+	}
+#endif
+
 	/* These are only saw by "Rmpi" not "pbdMPI". */
 	MPI_APTS.comm = comm;
 	MPI_APTS.status = status;
@@ -48,19 +72,44 @@ void set_MPI_APTS_in_R(){
 	MPI_APTS.REQUEST_MAXSIZE = &REQUEST_MAXSIZE;
 
 #if (MPI_APTS_DEBUG & 1) == 1
-	int myrank;
-	MPI_Comm_rank(MPI_COMM_WORLD, &myrank);
 	if(myrank == 0){
 		REprintf("rank: %d, load: %s, func: %s.\n", myrank,
 			LOAD_LOCATION[__LOAD_LOCATION__], __FUNCTION__);
-		REprintf("  %s (v): %x %x %x %x %x.\n", __FILE__, comm,
-			status, datatype, info, request);
-		REprintf("  %s (v): %d %d %d.\n", __FILE__, COMM_MAXSIZE,
-			STATUS_MAXSIZE, REQUEST_MAXSIZE);
-		REprintf("  %s (a): %x %x %x %x %x.\n", __FILE__, &comm,
-			&status, &datatype, &info, &request);
-		REprintf("  %s (a): %x %x %x.\n", __FILE__, &COMM_MAXSIZE,
-			&STATUS_MAXSIZE, &REQUEST_MAXSIZE);
+		REprintf("  ==> assign to R.\n");
+		REprintf("  ==> struct: comm status datatype info request.\n");
+		REprintf("  %s (v): %x %x %x %x %x.\n", __FILE__,
+			MPI_APTS.comm,
+			MPI_APTS.status,
+			MPI_APTS.datatype,
+			MPI_APTS.info,
+			MPI_APTS.request);
+		REprintf("  %s (v0): %x %x %x %x %x.\n", __FILE__,
+			MPI_APTS.comm[0],
+			MPI_APTS.status[0],
+			MPI_APTS.datatype[0],
+			MPI_APTS.info[0],
+			MPI_APTS.request[0]);
+		REprintf("  %s (a): %x %x %x %x %x.\n", __FILE__,
+			&(MPI_APTS.comm),
+			&(MPI_APTS.status),
+			&(MPI_APTS.datatype),
+			&(MPI_APTS.info),
+			&(MPI_APTS.request));
+		REprintf("  %s (a0): %x %x %x %x %x.\n", __FILE__,
+			&(MPI_APTS.comm[0]),
+			&(MPI_APTS.status[0]),
+			&(MPI_APTS.datatype[0]),
+			&(MPI_APTS.info[0]),
+			&(MPI_APTS.request[0]));
+		REprintf("     ==> maxsize: comm status request.\n");
+		REprintf("     %s (v): %d %d %d.\n", __FILE__,
+			*(MPI_APTS.COMM_MAXSIZE),
+			*(MPI_APTS.STATUS_MAXSIZE),
+			*(MPI_APTS.REQUEST_MAXSIZE));
+		REprintf("     %s (a): %x %x %x.\n", __FILE__,
+			&(MPI_APTS.COMM_MAXSIZE),
+			&(MPI_APTS.STATUS_MAXSIZE),
+			&(MPI_APTS.REQUEST_MAXSIZE));
 	}
 #endif
 
@@ -81,6 +130,50 @@ void get_MPI_APTS_from_R(){
         /* Get pointers. */
         MPI_APTS_ptr = R_ExternalPtrAddr(R_apts);
 
+#if (MPI_APTS_DEBUG & 1) == 1
+	int myrank;
+	MPI_Comm_rank(MPI_COMM_WORLD, &myrank);
+	if(myrank == 0){
+		REprintf("rank: %d, load: %s, func: %s.\n", myrank,
+			LOAD_LOCATION[__LOAD_LOCATION__], __FUNCTION__);
+		REprintf("  ==> get from R.\n");
+		REprintf("  ==> mpi_apts: comm status datatype info request.\n");
+		REprintf("  %s (v): %x %x %x %x %x.\n",__FILE__,
+			MPI_APTS_ptr->comm,
+			MPI_APTS_ptr->status,
+			MPI_APTS_ptr->datatype,
+			MPI_APTS_ptr->info,
+			MPI_APTS_ptr->request);
+		REprintf("  %s (v0): %x %x %x %x %x.\n", __FILE__,
+			MPI_APTS_ptr->comm[0],
+			MPI_APTS_ptr->status[0],
+			MPI_APTS_ptr->datatype[0],
+			MPI_APTS_ptr->info[0],
+			MPI_APTS_ptr->request[0]);
+		REprintf("  %s (a): %x %x %x %x %x.\n", __FILE__,
+			&(MPI_APTS_ptr->comm),
+			&(MPI_APTS_ptr->status),
+			&(MPI_APTS_ptr->datatype),
+			&(MPI_APTS_ptr->info),
+			&(MPI_APTS_ptr->request));
+		REprintf("  %s (a0): %x %x %x %x %x.\n", __FILE__,
+			&(MPI_APTS_ptr->comm[0]),
+			&(MPI_APTS_ptr->status[0]),
+			&(MPI_APTS_ptr->datatype[0]),
+			&(MPI_APTS_ptr->info[0]),
+			&(MPI_APTS_ptr->request[0]));
+		REprintf("     ==> maxsize: comm status request.\n");
+		REprintf("     %s (v): %d %d %d.\n", __FILE__,
+			*MPI_APTS_ptr->COMM_MAXSIZE,
+			*MPI_APTS_ptr->STATUS_MAXSIZE,
+			*MPI_APTS_ptr->REQUEST_MAXSIZE);
+		REprintf("     %s (a): %x %x %x.\n", __FILE__,
+			MPI_APTS_ptr->COMM_MAXSIZE,
+			MPI_APTS_ptr->STATUS_MAXSIZE,
+			MPI_APTS_ptr->REQUEST_MAXSIZE);
+	}
+#endif
+
         /* These are only saw by "pbdMPI" not "Rmpi". */
         comm = (MPI_Comm*) MPI_APTS_ptr->comm;
         status = (MPI_Status *) MPI_APTS_ptr->status;
@@ -93,18 +186,23 @@ void get_MPI_APTS_from_R(){
         REQUEST_MAXSIZE = *MPI_APTS_ptr->REQUEST_MAXSIZE;
 
 #if (MPI_APTS_DEBUG & 1) == 1
-	int myrank;
-	MPI_Comm_rank(MPI_COMM_WORLD, &myrank);
 	if(myrank == 0){
 		REprintf("rank: %d, load: %s, func: %s.\n", myrank,
 			LOAD_LOCATION[__LOAD_LOCATION__], __FUNCTION__);
+		REprintf("  ==> assign to C.\n");
+		REprintf("  ==> ptr: comm status datatype info request.\n");
 		REprintf("  %s (v): %x %x %x %x %x.\n", __FILE__, comm,
 			status, datatype, info, request);
-		REprintf("  %s (v): %d %d %d.\n", __FILE__, COMM_MAXSIZE,
-			STATUS_MAXSIZE, REQUEST_MAXSIZE);
+		REprintf("  %s (v0): %x %x %x %x %x.\n", __FILE__, comm[0],
+			status[0], datatype[0], info[0], request[0]);
 		REprintf("  %s (a): %x %x %x %x %x.\n", __FILE__, &comm,
 			&status, &datatype, &info, &request);
-		REprintf("  %s (a): %x %x %x.\n", __FILE__, &COMM_MAXSIZE,
+		REprintf("  %s (a0): %x %x %x %x %x.\n", __FILE__, &comm[0],
+			&status[0], &datatype[0], &info[0], &request[0]);
+		REprintf("     ==> maxsize: comm status request.\n");
+		REprintf("     %s (v): %d %d %d.\n", __FILE__, COMM_MAXSIZE,
+			STATUS_MAXSIZE, REQUEST_MAXSIZE);
+		REprintf("     %s (a): %x %x %x.\n", __FILE__, &COMM_MAXSIZE,
 			&STATUS_MAXSIZE, &REQUEST_MAXSIZE);
 	}
 #endif

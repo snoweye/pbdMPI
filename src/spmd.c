@@ -55,7 +55,8 @@ SEXP spmd_initialize(){
 	}
 	if(info == NULL){
 		info = (MPI_Info *) Calloc(1, MPI_Info);
-		info[0] = MPI_INFO_NULL;
+		/* info[0] = MPI_INFO_NULL; */
+		MPI_Info_create(&info[0]);
 	}
 	if(request == NULL){
 		request = (MPI_Request *) Calloc(REQUEST_MAXSIZE, MPI_Request);
@@ -77,11 +78,46 @@ SEXP spmd_finalize(SEXP R_mpi_finalize){
 	if(C_mpi_finalize == 1){
 		if(! flag){
 			if(WHO_LOAD_FIRST == PBDMPI){
+
+#if (MPI_APTS_DEBUG & 1) == 1
+	int myrank;
+	MPI_Comm_rank(MPI_COMM_WORLD, &myrank);
+	if(myrank == 0){
+		REprintf("rank: %d, load: %s, func: %s.\n", myrank,
+			LOAD_LOCATION[__LOAD_LOCATION__], __FUNCTION__);
+		REprintf("  before free\n");
+		REprintf("  ==> ptr: comm status datatype info request.\n");
+		REprintf("  %s (v): %x %x %x %x %x.\n", __FILE__, comm,
+			status, datatype, info, request);
+		REprintf("  %s (v0): %x %x %x %x %x.\n", __FILE__, comm[0],
+			status[0], datatype[0], info[0], request[0]);
+		REprintf("  %s (a): %x %x %x %x %x.\n", __FILE__, &comm,
+			&status, &datatype, &info, &request);
+		REprintf("  %s (a0): %x %x %x %x %x.\n", __FILE__, &comm[0],
+			&status[0], &datatype[0], &info[0], &request[0]);
+	}
+#endif
+
 				Free(comm);
 				Free(status);
 				Free(request);
 				Free(datatype);
+				MPI_Info_free(&info[0]);
 				Free(info);
+
+#if (MPI_APTS_DEBUG & 1) == 1
+	if(myrank == 0){
+		REprintf("rank: %d, load: %s, func: %s.\n", myrank,
+			LOAD_LOCATION[__LOAD_LOCATION__], __FUNCTION__);
+		REprintf("  after free\n");
+		REprintf("  ==> ptr: comm status datatype info request.\n");
+		REprintf("  %s (v): %x %x %x %x %x.\n", __FILE__, comm,
+			status, datatype, info, request);
+		REprintf("  %s (a): %x %x %x %x %x.\n", __FILE__, &comm,
+			&status, &datatype, &info, &request);
+	}
+#endif
+
 			}
 #ifndef WIN
 			pkg_dlclose();
