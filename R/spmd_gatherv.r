@@ -17,6 +17,24 @@ spmd.gather.default <- function(x, x.buffer = NULL, x.count = NULL,
 
 spmd.gatherv.default <- spmd.gather.default
 
+### For data.frame.
+spmd.gather.data.frame <- function(x, x.buffer = NULL, x.count = NULL,
+    displs = NULL, rank.dest = .pbd_env$SPMD.CT$rank.root,
+    comm = .pbd_env$SPMD.CT$comm, unlist = .pbd_env$SPMD.CT$unlist){
+  ret <- do.call(c, 
+                 lapply(x, function(x){
+                   ## TODO consider unserialized class(x) methods here
+                   ## TODO consider single check and reduce sum for all
+    spmd.gather.default(x, rank.dest = rank.dest, comm = comm, unlist = unlist)
+  }
+  ))
+  if(spmd.comm.rank(comm) != rank.dest){
+    return(invisible())
+  }
+  ret = as.data.frame(ret)
+  colnames(ret) <- colnames(x)
+  ret
+} # End of spmd.gather.data.frame().
 
 ### For gather and basic types.
 spmd.gather.integer <- function(x, x.buffer, x.count = NULL, displs = NULL,
@@ -98,6 +116,13 @@ setGeneric(
 )
 
 ### For gather.
+setMethod(
+  f = "gather",
+  signature = signature(x = "data.frame",
+                        x.buffer = "missing",
+                        x.count = "missing"),
+  definition = spmd.gather.data.frame
+)
 setMethod(
   f = "gather",
   signature = signature(x = "ANY",
