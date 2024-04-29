@@ -32,7 +32,7 @@ spmd.gather.data.frame <- function(x, x.buffer = NULL, x.count = NULL,
     return(invisible())
   }
   ret = as.data.frame(ret)
-  colnames(ret) <- colnames(x)
+  names(ret) <- names(x)
   ret
 } # End of spmd.gather.data.frame().
 
