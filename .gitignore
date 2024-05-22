@@ -3,6 +3,7 @@
 *.so
 *.log
 *.status
+*.Rproj
 
 *~
 *.swp

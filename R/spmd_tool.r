@@ -70,6 +70,25 @@ spmd.comm.print <- function(x, all.rank = .pbd_env$SPMD.CT$print.all.rank,
 
 comm.print <- spmd.comm.print
 
+## Constructs the text for spmd.comm.cat(). Includes debugging rank-coloring
+## option `quiet = "color"`.
+cat_text <- function(..., quiet, sep, rank) {
+  m1 = paste0(..., sep = sep)
+  if(is.logical(quiet)) {
+    if(! quiet) {
+      m0 = paste0("COMM.RANK = ", rank, "\n")
+      m2 = ""
+    } else {
+      m0 = m2 = ""
+    }
+  } else if(quiet == "color") {
+    col = 30 + COMM.RANK %% 8
+    m0 = paste0("\033[1;", col, "m")
+    m2 = "\033[0m\n"
+  }
+  paste0(m0, m1, m2)
+}
+
 spmd.comm.cat <- function(..., all.rank = .pbd_env$SPMD.CT$print.all.rank,
     rank.print = .pbd_env$SPMD.CT$rank.source, comm = .pbd_env$SPMD.CT$comm,
     quiet = .pbd_env$SPMD.CT$print.quiet, sep = " ", fill = FALSE,
@@ -84,13 +103,8 @@ spmd.comm.cat <- function(..., all.rank = .pbd_env$SPMD.CT$print.all.rank,
   if(all.rank){
     for(i.rank in 0:(spmd.comm.size(comm) - 1)){
       if(i.rank == COMM.RANK){
-        if(! quiet){
-          cat("COMM.RANK = ", COMM.RANK, "\n", sep = "")
-          if(flush){
-            flush(con)
-          }
-        }
-        cat(..., sep = sep, fill = fill, labels = labels, append = append)
+        cat(cat_text(..., quiet = quiet, sep = sep, rank = COMM.RANK), 
+                     fill = fill, labels = labels, append = append)
         if(flush){
           flush(con)
         }
@@ -102,13 +116,8 @@ spmd.comm.cat <- function(..., all.rank = .pbd_env$SPMD.CT$print.all.rank,
   } else{
     for(i.rank in rank.print){
       if(i.rank == COMM.RANK){
-        if(! quiet){
-          cat("COMM.RANK = ", COMM.RANK, "\n", sep = "")
-          if(flush){
-            flush(con)
-          }
-        }
-        cat(..., sep = sep, fill = fill, labels = labels, append = append)
+        cat(cat_text(..., quiet = quiet, sep = sep, rank = COMM.RANK), 
+                     fill = fill, labels = labels, append = append)
         if(flush){
           flush(con)
         }

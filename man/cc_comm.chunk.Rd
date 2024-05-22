@@ -37,15 +37,17 @@ comm.chunk(
   "left"  (low ranks) or on the "right" (high ranks).}
 
   \item{rng}{If TRUE, set up different L'Ecuyere random number generator streams. 
-  Switch to stream \code{i} with \code{\link{comm.set.stream}(i)}, 
-  where \code{i} is a global index. If \code{form = "vector"} random streams are 
-  set up for each index in the vector and only those needed by each rank are
-  kept.
-  If \code{form = "number"}, each rank will use a different stream, set by
-  default (so \code{\link{comm.set.stream}} does not need to be used).
-  Additional ... parameter 
-  \code{seed}, passed to \code{\link{comm.set.seed}}, can be set for
-  reproducibility.}
+    \itemize{
+      \item If \code{form = "vector"}, N random streams are set up, one for each 
+      item in the vector and only those needed by the local chunk are kept 
+      locally by each rank. Switch to stream \code{i} with 
+      \code{\link{comm.set.stream}(i)}, where \code{i} is a global index.
+      \item If \code{form = "number"}, each rank will use a different stream, set
+      by default (so \code{\link{comm.set.stream}} does not need to be used).
+      \item Additional ... parameter \code{seed}, passed to
+      \code{\link{comm.set.seed}}, can be set for reproducibility.
+    }
+  }
 
   \item{all.rank}{FALSE returns only the chunk for rank r. TRUE returns a vector of
   length p (when form="number"), and a list of length p (when form="vector")
