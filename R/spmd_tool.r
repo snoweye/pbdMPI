@@ -84,7 +84,7 @@ cat_text <- function(..., quiet, sep, rank) {
   } else if(quiet == "color") {
     col = 30 + COMM.RANK %% 8
     m0 = paste0("\033[1;", col, "m")
-    m2 = "\033[0m\n"
+    m2 = "\033[0m"
   }
   paste0(m0, m1, m2)
 }
