@@ -72,8 +72,7 @@ comm.print <- spmd.comm.print
 
 ## Constructs the text for spmd.comm.cat(). Includes debugging rank-coloring
 ## option `quiet = "color"`.
-cat_text <- function(..., quiet, sep, rank) {
-  m1 = paste(..., sep = sep)
+decorate <- function(quiet, sep, rank) {
   if(is.logical(quiet)) {
     if(! quiet) {
       m0 = paste0("COMM.RANK = ", rank, "\n")
@@ -86,7 +85,7 @@ cat_text <- function(..., quiet, sep, rank) {
     m0 = paste0("\033[1;", col, "m")
     m2 = "\033[0m" # reset color
   }
-  paste0(m0, m1, m2)
+  c(m0, m2)
 }
 
 spmd.comm.cat <- function(..., all.rank = .pbd_env$SPMD.CT$print.all.rank,
@@ -103,8 +102,8 @@ spmd.comm.cat <- function(..., all.rank = .pbd_env$SPMD.CT$print.all.rank,
   if(all.rank){
     for(i.rank in 0:(spmd.comm.size(comm) - 1)){
       if(i.rank == COMM.RANK){
-        cat(cat_text(..., quiet = quiet, sep = sep, rank = COMM.RANK), 
-                     fill = fill, labels = labels, append = append)
+        d = decorate(quiet, sep, COMM.RANK)
+        cat(d[1], ..., d[2], sep = sep, fill = fill, labels = labels, append = append)
         if(flush){
           flush(con)
         }
@@ -116,8 +115,8 @@ spmd.comm.cat <- function(..., all.rank = .pbd_env$SPMD.CT$print.all.rank,
   } else{
     for(i.rank in rank.print){
       if(i.rank == COMM.RANK){
-        cat(cat_text(..., quiet = quiet, sep = sep, rank = COMM.RANK), 
-                     fill = fill, labels = labels, append = append)
+        d = decorate(quiet, sep, COMM.RANK)
+        cat(d[1],..., d[2], sep = sep, fill = fill, labels = labels, append = append)
         if(flush){
           flush(con)
         }
