@@ -82,7 +82,7 @@ cat_text <- function(..., quiet, sep, rank) {
       m0 = m2 = ""
     }
   } else if(quiet == "color") {
-    col = 30 + rank %% 8  # uses ANSI color codes
+    col = 40 + rank %% 8  # set ANSI background color codes (platform dependent)
     m0 = paste0("\033[1;", col, "m")
     m2 = "\033[0m" # reset color
   }
