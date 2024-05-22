@@ -73,7 +73,7 @@ comm.print <- spmd.comm.print
 ## Constructs the text for spmd.comm.cat(). Includes debugging rank-coloring
 ## option `quiet = "color"`.
 cat_text <- function(..., quiet, sep, rank) {
-  m1 = paste0(..., sep = sep)
+  m1 = paste(..., sep = sep)
   if(is.logical(quiet)) {
     if(! quiet) {
       m0 = paste0("COMM.RANK = ", rank, "\n")
@@ -82,9 +82,9 @@ cat_text <- function(..., quiet, sep, rank) {
       m0 = m2 = ""
     }
   } else if(quiet == "color") {
-    col = 30 + COMM.RANK %% 8
+    col = 30 + COMM.RANK %% 8  # uses ANSI color codes
     m0 = paste0("\033[1;", col, "m")
-    m2 = "\033[0m"
+    m2 = "\033[0m" # reset color
   }
   paste0(m0, m1, m2)
 }
