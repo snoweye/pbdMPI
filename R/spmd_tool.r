@@ -126,7 +126,9 @@ spmd.comm.cat <- function(..., all.rank = .pbd_env$SPMD.CT$print.all.rank,
     for(i.rank in rank.print){
       if(i.rank == COMM.RANK){
         d = decor(quiet, sep, COMM.RANK)
-        cat(d[1],..., d[2], sep = sep, fill = fill, labels = labels, append = append)
+        cat(d[1], sep = "", fill = fill, labels = labels, append = append)
+        cat(..., sep = sep, fill = fill, labels = labels, append = append)
+        cat(d[2], sep = "", fill = fill, labels = labels, append = append)
         if(flush){
           flush(con)
         }
