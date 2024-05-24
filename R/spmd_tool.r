@@ -81,8 +81,9 @@ decor <- function(quiet, sep, rank) {
     } else {
       prefix = postfix = ""
     }
-  } else if(quiet == "color") {
-    col = 90 + rank %% 8  # set ANSI text color codes (platform dependent)
+  } else if(is.integer(quiet)) { 
+    rank = comm.rank(quiet) # color by comm specified in quiet
+    col = 90 + rank %% 8  # set ANSI text color codes (platform-dependent)
     prefix = paste0("\033[1;", col, "m")
     postfix = "\033[0m" # reset color
   }
@@ -99,20 +100,23 @@ spmd.comm.cat <- function(..., all.rank = .pbd_env$SPMD.CT$print.all.rank,
   
   if(barrier) spmd.barrier(comm)
 
-  ## If several ranks print, use tag-team
-  rank.print <- unique(rank.print) # duplicates would hang!
+  ## If several ranks print, use distributed tag-team
+  rank.print <- unique(rank.print) # duplicates would deadlock!
   if(all.rank) rank.print = 0L:(COMM.SIZE - 1L)
   if(COMM.RANK %in% rank.print) {
     next.rank = match(COMM.RANK, rank.print) + 1L
     prev.rank = next.rank - 2L
-    if(prev.rank > 0L) 
+    
+    if(prev.rank > 0L) # post a blocking receive
       recv(rank.source = rank.print[prev.rank], comm = comm)
-    d = decor(quiet, sep, COMM.RANK)
+    
+    d = decor(quiet, sep)
     cat(d[1L], sep = "", fill = fill, labels = labels, append = append)
     cat(..., sep = sep, fill = fill, labels = labels, append = append)
     cat(d[2L], sep = "", fill = fill, labels = labels, append = append)
     if(flush) flush(con)
-    if(next.rank <= length(rank.print)) 
+    
+    if(next.rank <= length(rank.print)) # release next print rank
       send(integer(0L), rank.dest = rank.print[next.rank], comm = comm)
   }
 
