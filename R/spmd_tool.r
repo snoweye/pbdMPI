@@ -70,15 +70,8 @@ spmd.comm.print <- function(x, all.rank = .pbd_env$SPMD.CT$print.all.rank,
 
 comm.print <- spmd.comm.print
 
-## Constructs text decorations for spmd.comm.cat(). Includes debugging 
-## rank-coloring option `quiet = "color"`.
-## 
-## Rewrite all.rank (and include specific rank)
-## - set specific ranks to all ranks so only one function is needed
-## - do a hand-off communication between the ranks instead of barrier for
-##   possible additional speedup and additional fractional delay between ranks.
-##   Currently, next rank prints immediately after barrier. Look for Drew's 
-##   version - he may have already done this!
+## Constructs text decorations for spmd.comm.cat().
+## Includes debugging rank-coloring option quiet = "color".
 ##   
 decor <- function(quiet, sep, rank) {
   if(is.logical(quiet)) {
@@ -104,24 +97,23 @@ spmd.comm.cat <- function(..., all.rank = .pbd_env$SPMD.CT$print.all.rank,
   COMM.RANK <- spmd.comm.rank(comm)
   COMM.SIZE <- spmd.comm.size(comm)
   
-  if(barrier){
-    spmd.barrier(comm)
-  }
+  if(barrier) spmd.barrier(comm)
 
-  ## If several ranks print, use tag-team ring
-  rank.print <- unique(rank.print)
+  ## If several ranks print, use tag-team
+  rank.print <- unique(rank.print) # duplicates would hang!
   if(all.rank) rank.print = 0L:(COMM.SIZE - 1L)
   if(COMM.RANK %in% rank.print) {
     next.rank = match(COMM.RANK, rank.print) + 1L
     prev.rank = next.rank - 2L
-    if(prev.rank > 0L) recv(rank.source = rank.print[prev.rank], comm = comm)
+    if(prev.rank > 0L) 
+      recv(rank.source = rank.print[prev.rank], comm = comm)
     d = decor(quiet, sep, COMM.RANK)
     cat(d[1L], sep = "", fill = fill, labels = labels, append = append)
     cat(..., sep = sep, fill = fill, labels = labels, append = append)
     cat(d[2L], sep = "", fill = fill, labels = labels, append = append)
     if(flush) flush(con)
     if(next.rank <= length(rank.print)) 
-      send(1L, rank.dest = rank.print[next.rank], comm = comm)
+      send(integer(0L), rank.dest = rank.print[next.rank], comm = comm)
   }
 
   invisible()
