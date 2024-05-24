@@ -73,10 +73,10 @@ comm.print <- spmd.comm.print
 ## Constructs text decorations for spmd.comm.cat().
 ## Includes debugging rank-coloring option quiet = "color".
 ##   
-decor <- function(quiet, sep, rank) {
+decor <- function(quiet, sep, comm) {
   if(is.logical(quiet)) {
     if(! quiet) {
-      prefix = paste0("COMM.RANK = ", rank, "\n")
+      prefix = paste0("COMM.RANK = ", comm.rank(comm), "\n")
       postfix = ""
     } else {
       prefix = postfix = ""
@@ -110,7 +110,7 @@ spmd.comm.cat <- function(..., all.rank = .pbd_env$SPMD.CT$print.all.rank,
     if(prev.rank > 0L) # post a blocking receive
       recv(rank.source = rank.print[prev.rank], comm = comm)
     
-    d = decor(quiet, sep)
+    d = decor(quiet, sep, comm)
     cat(d[1L], sep = "", fill = fill, labels = labels, append = append)
     cat(..., sep = sep, fill = fill, labels = labels, append = append)
     cat(d[2L], sep = "", fill = fill, labels = labels, append = append)
