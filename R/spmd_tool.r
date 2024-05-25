@@ -99,8 +99,9 @@ spmd.comm.cat <- function(..., all.rank = .pbd_env$SPMD.CT$print.all.rank,
   COMM.SIZE <- spmd.comm.size(comm)
   
   ## Barrier is released by rank 0 after a specific number of check-ins,
-  ## regardless of who posts them!
-  ## This can lead to premature release if another barrier is started!
+  ## regardless of who posts them! Seems this will not break.
+  ## But prints are handed off to other system components so can overprint.
+  if(COMM.RANK == 0 && sleep > 0) Sys.sleep(sleep) # give last rank time to print
   if(barrier) spmd.barrier(comm)
   
   ## If several ranks print, use distributed tag-team
@@ -122,7 +123,6 @@ spmd.comm.cat <- function(..., all.rank = .pbd_env$SPMD.CT$print.all.rank,
     if(next.rank <= length(rank.print)) # release next print rank
       send(integer(0L), rank.dest = rank.print[next.rank], comm = comm)
   }
-  if(COMM.RANK == 0 && sleep > 0) Sys.sleep(sleep) # give last rank time to print
   
   invisible()
 } # End of spmd.comm.cat().
