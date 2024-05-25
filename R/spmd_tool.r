@@ -98,7 +98,6 @@ spmd.comm.cat <- function(..., all.rank = .pbd_env$SPMD.CT$print.all.rank,
   COMM.RANK <- spmd.comm.rank(comm)
   COMM.SIZE <- spmd.comm.size(comm)
   
-  if(barrier) spmd.barrier(comm)
   ## Barrier is released by rank 0 after a specific number of check-ins,
   ## regardless of who posts them!
   ## This can lead to premature release if another barrier is started!
@@ -122,7 +121,8 @@ spmd.comm.cat <- function(..., all.rank = .pbd_env$SPMD.CT$print.all.rank,
     if(next.rank <= length(rank.print)) # release next print rank
       send(integer(0L), rank.dest = rank.print[next.rank], comm = comm)
   }
-  spmd.barrier(comm) # test if more delay solves transition
+  
+  if(barrier) spmd.barrier(comm)
   
   invisible()
 } # End of spmd.comm.cat().
