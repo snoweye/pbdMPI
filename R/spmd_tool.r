@@ -94,7 +94,7 @@ spmd.comm.cat <- function(..., all.rank = .pbd_env$SPMD.CT$print.all.rank,
     rank.print = .pbd_env$SPMD.CT$rank.source, comm = .pbd_env$SPMD.CT$comm,
     quiet = .pbd_env$SPMD.CT$print.quiet, sep = " ", fill = FALSE,
     labels = NULL, append = FALSE, flush = .pbd_env$SPMD.CT$msg.flush,
-    barrier = .pbd_env$SPMD.CT$msg.barrier, con = stdout()){
+    barrier = .pbd_env$SPMD.CT$msg.barrier, con = stdout(), sleep = 0){
   COMM.RANK <- spmd.comm.rank(comm)
   COMM.SIZE <- spmd.comm.size(comm)
   
@@ -122,7 +122,7 @@ spmd.comm.cat <- function(..., all.rank = .pbd_env$SPMD.CT$print.all.rank,
     if(next.rank <= length(rank.print)) # release next print rank
       send(integer(0L), rank.dest = rank.print[next.rank], comm = comm)
   }
-  if(COMM.RANK == 0) Sys.sleep(0.01) # give last rank time to print
+  if(COMM.RANK == 0 && sleep > 0) Sys.sleep(sleep) # give last rank time to print
   
   invisible()
 } # End of spmd.comm.cat().
