@@ -121,9 +121,9 @@ spmd.comm.cat <- function(..., all.rank = .pbd_env$SPMD.CT$print.all.rank,
     
     if(next.rank <= length(rank.print)) # release next print rank
       send(integer(0L), rank.dest = rank.print[next.rank], comm = comm)
-    spmd.barrier(comm) # test if more delay solves transition
   }
-
+  spmd.barrier(comm) # test if more delay solves transition
+  
   invisible()
 } # End of spmd.comm.cat().
 
