@@ -132,7 +132,7 @@ spmd.comm.cat <- function(..., all.rank = .pbd_env$SPMD.CT$print.all.rank,
     rank.print = .pbd_env$SPMD.CT$rank.source, comm = .pbd_env$SPMD.CT$comm,
     quiet = .pbd_env$SPMD.CT$print.quiet, sep = " ", fill = FALSE,
     labels = NULL, append = FALSE, flush = .pbd_env$SPMD.CT$msg.flush,
-    barrier = .pbd_env$SPMD.CT$msg.barrier, con = stdout(), sleep = 0){
+    barrier = .pbd_env$SPMD.CT$msg.barrier, con = stdout(), sleep = 0) {
   COMM.RANK <- spmd.comm.rank(comm)
   COMM.SIZE <- spmd.comm.size(comm)
   
