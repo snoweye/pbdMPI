@@ -102,7 +102,7 @@ spmd.comm.print(x, all.rank = .pbd_env$SPMD.CT$print.all.rank,
   ## posts them! Seems this might break in sub-comm grids?
   ## Prints are handed off to other system components so overprint can still
   ## occur - use a .01 or shorter sleep to avoid this.
-  if(COMM.RANK == 0 && sleep > 0) Sys.sleep(sleep) # give last cat time to land
+  if(COMM.RANK == 0L && sleep > 0) Sys.sleep(sleep) # give last cat time to land
   if(barrier) spmd.barrier(comm)
 
   ## If several ranks print, use distributed tag-team
@@ -140,7 +140,7 @@ spmd.comm.cat <- function(..., all.rank = .pbd_env$SPMD.CT$print.all.rank,
   ## posts them! Seems this might break in sub-comm grids?
   ## Prints are handed off to other system components so overprint can still
   ## occur - use a .01 or shorter sleep to avoid this.
-  if(COMM.RANK == 0 && sleep > 0) Sys.sleep(sleep) # give last cat time to land
+  if(COMM.RANK == 0L && sleep > 0) Sys.sleep(sleep) # give last cat time to land
   if(barrier) spmd.barrier(comm)
 
   ## If several ranks print, use distributed tag-team
