@@ -80,7 +80,7 @@ decor <- function(quiet, comm) {
     } else {
       prefix <- paste0("COMM.RANK = ", comm.rank(comm), "\n")
     }
-  } else if(is.integer(quiet)) { 
+  } else if(is.integer(quiet)) {
     rank <- comm.rank(quiet) # color by comm specified by quiet integer
     col <- 90 + rank %% 8  # set ANSI text color codes (platform-dependent)
     prefix <- paste0("\033[1;", col, "m")
@@ -90,7 +90,7 @@ decor <- function(quiet, comm) {
 }
 
 spmd.comm.print(x, all.rank = .pbd_env$SPMD.CT$print.all.rank,
-                rank.print = .pbd_env$SPMD.CT$rank.source, 
+                rank.print = .pbd_env$SPMD.CT$rank.source,
                 comm = .pbd_env$SPMD.CT$comm, quiet = .pbd_env$SPMD.CT$print.quiet,
                 flush = .pbd_env$SPMD.CT$msg.flush,
                 barrier = .pbd_env$SPMD.CT$msg.barrier, con = stdout(),
