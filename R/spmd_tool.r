@@ -120,9 +120,14 @@ spmd.comm.cat <- function(..., all.rank = .pbd_env$SPMD.CT$print.all.rank,
     
     if(next.rank <= length(rank.print)) # release next print rank
       send(integer(0L), rank.dest = rank.print[next.rank], comm = comm)
+    if(next.rank == length(rank.print)) # release rank 0
+      send(integer(0L), rank.dest = 0L, comm = comm)
   }
   
-  if(barrier) spmd.barrier(comm)
+  # pause rank 0 until all ranks are done
+  if(COMM.RANK == 0L) recv(rank.source = rank.print[length(rank.print)], comm = comm)
+  
+#  if(barrier) spmd.barrier(comm)
   
   invisible()
 } # End of spmd.comm.cat().
