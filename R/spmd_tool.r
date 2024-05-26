@@ -16,12 +16,9 @@ spmd.hostinfo <- function(comm = .pbd_env$SPMD.CT$comm){
 ## Includes debugging rank-coloring option quiet = comm.
 spmd.decor <- function(quiet, comm) {
   if(is.logical(quiet)) {
+    prefix <- ""
     postfix <- ""
-    if(quiet) {
-      prefix <- ""
-    } else {
-      prefix <- paste0("COMM.RANK = ", comm.rank(comm), "\n")
-    }
+    if(! quiet) prefix <- paste0("COMM.RANK = ", comm.rank(comm), "\n")
   } else if(is.integer(quiet)) {
     rank <- comm.rank(quiet) # color by comm specified by quiet integer
     col <- 90 + rank %% 8  # set ANSI text color codes (platform-dependent)
@@ -43,8 +40,8 @@ spmd.comm.print <- function(x, all.rank = .pbd_env$SPMD.CT$print.all.rank,
   if (!exists(deparse(substitute(x))))
     quiet <- TRUE
 
-  ## Barrier is released by rank 0 after COMM.SIZE check-ins regardless of who
-  ## posts them! Seems this might break in sub-comm grids?
+  ## Barrier released by rank 0 after COMM.SIZE check-ins. Will this break in
+  ## sub-comm grids?
   ## Prints are handed off to other system components so overprint can still
   ## occur - use a .01 or shorter sleep to avoid this.
   if(COMM.RANK == 0L && sleep > 0) Sys.sleep(sleep) # give last cat time to land
@@ -53,12 +50,11 @@ spmd.comm.print <- function(x, all.rank = .pbd_env$SPMD.CT$print.all.rank,
   ## If several ranks print, use distributed tag-team
   rank.print <- unique(rank.print) # duplicates would deadlock!
   if(all.rank) rank.print <- 0L:(COMM.SIZE - 1L)
-  if(COMM.RANK %in% rank.print) {
-    next.rank <- match(COMM.RANK, rank.print) + 1L
-    prev.rank <- next.rank - 2L
+  rank.pos <- match(COMM.RANK, rank.print)
+  if(! is.na(rank.pos)) { # my rank prints
 
-    if(prev.rank > 0L) # post a blocking receive
-      recv(rank.source = rank.print[prev.rank], comm = comm)
+    if(rank.pos > 1L) # not first, so post a blocking receive from previous
+      recv(rank.source = rank.print[rank.pos - 1L], comm = comm)
 
     d <- spmd.decor(quiet, comm)
     cat(d[1L], sep = "")
@@ -66,8 +62,8 @@ spmd.comm.print <- function(x, all.rank = .pbd_env$SPMD.CT$print.all.rank,
     cat(d[2L], sep = "")
     if(flush) flush(con)
 
-    if(next.rank <= length(rank.print)) # release next print rank
-      send(integer(0L), rank.dest = rank.print[next.rank], comm = comm)
+    if(rank.pos < length(rank.print)) # not last, so release next print rank
+      send(integer(0L), rank.dest = rank.print[rank.pos + 1L], comm = comm)
   }
 } # End of spmd.comm.print().
 
@@ -81,22 +77,17 @@ spmd.comm.cat <- function(..., all.rank = .pbd_env$SPMD.CT$print.all.rank,
   COMM.RANK <- spmd.comm.rank(comm)
   COMM.SIZE <- spmd.comm.size(comm)
 
-  ## Barrier is released by rank 0 after COMM.SIZE check-ins regardless of who
-  ## posts them! Seems this might break in sub-comm grids?
-  ## Prints are handed off to other system components so overprint can still
-  ## occur - use a .01 or shorter sleep to avoid this.
   if(COMM.RANK == 0L && sleep > 0) Sys.sleep(sleep) # give last cat time to land
   if(barrier) spmd.barrier(comm)
 
   ## If several ranks print, use distributed tag-team
   rank.print <- unique(rank.print) # duplicates would deadlock!
   if(all.rank) rank.print <- 0L:(COMM.SIZE - 1L)
-  if(COMM.RANK %in% rank.print) {
-    next.rank <- match(COMM.RANK, rank.print) + 1L
-    prev.rank <- next.rank - 2L
+  rank.pos <- match(COMM.RANK, rank.print)
+  if(! is.na(rank.pos)) { # my rank prints
 
-    if(prev.rank > 0L) # post a blocking receive
-      recv(rank.source = rank.print[prev.rank], comm = comm)
+    if(rank.pos > 1L) # not first, so post a blocking receive from previous
+      recv(rank.source = rank.print[rank.pos - 1L], comm = comm)
 
     d <- spmd.decor(quiet, comm)
     cat(d[1L], sep = "", fill = fill, labels = labels, append = append)
@@ -104,8 +95,8 @@ spmd.comm.cat <- function(..., all.rank = .pbd_env$SPMD.CT$print.all.rank,
     cat(d[2L], sep = "", fill = fill, labels = labels, append = append)
     if(flush) flush(con)
 
-    if(next.rank <= length(rank.print)) # release next print rank
-      send(integer(0L), rank.dest = rank.print[next.rank], comm = comm)
+    if(rank.pos < length(rank.print)) # not last, so release next print rank
+      send(integer(0L), rank.dest = rank.print[rank.pos + 1L], comm = comm)
   }
 
   invisible()
