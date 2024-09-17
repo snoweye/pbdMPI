@@ -11,3 +11,7 @@ appveyor.yml
 ^doc$
 ^Meta$
 ^__George
+
+^doc$
+^Meta$
+^__George
