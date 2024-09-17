@@ -12,9 +12,19 @@ spmd.hostinfo <- function(comm = .pbd_env$SPMD.CT$comm){
   invisible()
 } # End of spmd.hostinfo().
 
-## Constructs text decorations for spmd.comm.cat().
-## Includes debugging rank-coloring option quiet = comm.
-spmd.decor <- function(quiet, comm) {
+#' Constructs text color decorations for spmd.comm.cat() and spmd.comm.print().
+#' 
+#' @param quiet 
+#' Logical or integer to control rank-coloring. If logical, no
+#' coloring is done. If integer, up to 8 colors are used to distinguish ranks.
+#' This is accomplished by prepending ANSI text color codes and post-pending
+#' color reset. This is particularly useful in debugging situatons using 
+#' `all.rank = TRUE`.
+#' @param comm 
+#' The communicator to be used for coloring.
+#' 
+#' @return A character vector of length 2, giving the prefix and postfix.
+spmd.comm.decor <- function(quiet, comm = .pbd_env$SPMD.CT$comm) {
   if(is.logical(quiet)) {
     prefix <- ""
     postfix <- ""
@@ -56,7 +66,7 @@ spmd.comm.print <- function(x, all.rank = .pbd_env$SPMD.CT$print.all.rank,
     if(rank.pos > 1L) # not first, so post a blocking receive from previous
       recv(rank.source = rank.print[rank.pos - 1L], comm = comm)
 
-    d <- spmd.decor(quiet, comm)
+    d <- spmd.comm.decor(quiet, comm)
     cat(d[1L], sep = "")
     print(x, ...)
     cat(d[2L], sep = "")
@@ -89,7 +99,7 @@ spmd.comm.cat <- function(..., all.rank = .pbd_env$SPMD.CT$print.all.rank,
     if(rank.pos > 1L) # not first, so post a blocking receive from previous
       recv(rank.source = rank.print[rank.pos - 1L], comm = comm)
 
-    d <- spmd.decor(quiet, comm)
+    d <- spmd.comm.decor(quiet, comm)
     cat(d[1L], sep = "", fill = fill, labels = labels, append = append)
     cat(..., sep = sep, fill = fill, labels = labels, append = append)
     cat(d[2L], sep = "", fill = fill, labels = labels, append = append)

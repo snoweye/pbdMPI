@@ -234,7 +234,7 @@ if test -z "${MPI_INCLUDE_PATH}" ; then
 fi
 
 
-dnl For IBMMPI on submmit
+dnl For IBMMPI on Summit
 if test -z "${MPI_INCLUDE_PATH}" ; then
   if test "$MPITYPE" = "UNKNOWN" -o "$MPITYPE" = "IBMMPI" ; then
     TMP_INC="F"
@@ -458,7 +458,6 @@ if test -z "${MPI_INCLUDE_PATH}" ; then
     for d in /opt/SUNWhpc /opt/SUNWhpc/HPC \
              /opt/SUNWhpc/HPC/sun /opt/SUNWhpc/HPC8.2.1c/sun \
              /opt/SUNWhpc/HPC/gnu /opt/SUNWhpc/HPC8.2.1c/gnu \
-             /opt/homebrew/opt/open-mpi \
              /opt/lib /usr/lib /usr /usr/local/lib /usr/local \
              /opt/lib64 /usr/lib64 /usr/local/lib64 \
              /usr/lib/mpi/gcc/openmpi \

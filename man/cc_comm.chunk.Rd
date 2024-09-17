@@ -53,12 +53,13 @@ comm.chunk(
   length p (when form="number"), and a list of length p (when form="vector")
   each containing the output for the corresponding rank.}
 
-  \item{p}{The number of chunks (processors). Normally, it is NOT specified and defaults
-  to NULL, which assigns comm.size(comm).}
+  \item{p}{The number of processors (chunks), normally left as the default NULL, which
+  assigns comm.size(comm), the number of MPI ranks. Normally, this is NOT
+  specified unless testing in serial mode.}
 
-  \item{rank}{The rank of returned chunk. Normally, it is NOT specified and defaults to
-  NULL, which assigns comm.rank(comm)). Note that ranks are numbered from 0 to
-  p-1, whereas the list elements for all.rank=TRUE are numbered 1 to p.}
+  \item{rank}{The rank of the returned chunk, normally left as NULL, which
+  assigns comm.rank(comm)), the assigned MPI rank. Note that ranks are numbered
+  from 0 to p-1, whereas the list elements for all.rank=TRUE are numbered 1 to p.}
 
   \item{comm}{The communicator that determines MPI rank numbers.}
   
