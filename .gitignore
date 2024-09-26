@@ -17,6 +17,9 @@ R/zzz.r
 /doc/
 /Meta/
 
-__*
-
-/.quarto/
+## temp gitignores
+__GeorgeNotes.qmd
+inst/doc/pbdMPI-guide.pdf
+inst/tests/df_gather_num.R
+inst/tests/df_gather_o.R
+inst/tests/gather_buff.R
