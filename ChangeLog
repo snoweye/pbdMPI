@@ -1,6 +1,9 @@
 2024-05-30: Ver. 0.5-2
   * comm.print() and comm.cat() simplified by tag-team, only one barrier, and
     with a quiet=comm option for rank-color debugging
+2025-08-03: Ver. 0.5-3
+  * Removed bashisms for POSIX compliance.
+  * Fixed Fedora 42 unload issue.
 
 2025-08-03: Ver. 0.5-4
   * Removed bashisms for POSIX compliance.
