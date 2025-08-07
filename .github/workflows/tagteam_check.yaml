@@ -26,7 +26,6 @@ jobs:
       run: |
         sudo apt-get update -q
         sudo apt-get install -y -q libopenmpi-dev openmpi-bin
-        echo "LD_PRELOAD=/usr/lib/openmpi/lib/libmpi.so" >> $GITHUB_ENV
     
     - name: Verify MPI installation
       run: |
