@@ -76,7 +76,7 @@ jobs:
         echo "MSMPI_LIB32=C:\Program Files\Microsoft MPI\Lib\x86" >> $env:GITHUB_ENV
         echo "MSMPI_LIB64=C:\Program Files\Microsoft MPI\Lib\x64" >> $env:GITHUB_ENV
         echo "MSMPI_INC=C:\Program Files\Microsoft MPI\Include" >> $env:GITHUB_ENV
-        echo "$env:PATH;C:\Program Files\Microsoft MPI\Bin" | Out-File -Append -FilePath $env:GITHUB_ENV
+        echo "PATH=$env:PATH;C:\Program Files\Microsoft MPI\Bin" >> $env:GITHUB_ENV
       shell: powershell
     
     - name: Verify MS-MPI installation (Windows)
