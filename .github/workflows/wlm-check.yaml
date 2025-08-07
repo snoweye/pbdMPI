@@ -45,7 +45,7 @@ jobs:
       if: contains(matrix.config.container, 'fedora')
       run: |
         dnf update -y
-        dnf install -y R openmpi-devel which
+        dnf install -y R openmpi openmpi-devel which
       
     # Verify MPI installation (Linux/Fedora)
     - name: Verify MPI installation (Linux/Fedora)
