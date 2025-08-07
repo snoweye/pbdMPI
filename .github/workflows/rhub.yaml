@@ -94,6 +94,11 @@ jobs:
         if: runner.os == 'macOS'
         run: brew install open-mpi
       ###
+      # Install MPI (MS-MPI) for Windows
+      - name: Install MPI (MS-MPI)
+        if: runner.os == 'Windows'
+        run: choco install msmpi
+      ###
       - uses: r-hub/actions/run-check@v1
         with:
           job-config: ${{ matrix.config.job-config }}
