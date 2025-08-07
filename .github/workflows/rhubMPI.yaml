@@ -16,6 +16,10 @@ on:
         description: 'A comma separated list of R-hub platforms to use.'
         type: string
         default: 'linux,windows,macos'
+      branch:
+        description: 'Branch to checkout and test'
+        type: string
+        default: 'master'
       name:
         description: 'Run name. You can leave this empty now.'
         type: string
@@ -54,6 +58,7 @@ jobs:
       - uses: r-hub/actions/checkout@v1
       - uses: r-hub/actions/platform-info@v1
         with:
+          ref: ${{ github.event.inputs.branch }}
           token: ${{ secrets.RHUB_TOKEN }}
           job-config: ${{ matrix.config.job-config }}
       - uses: r-hub/actions/setup-deps@v1
@@ -79,6 +84,7 @@ jobs:
       - uses: r-hub/actions/checkout@v1
       - uses: r-hub/actions/setup-r@v1
         with:
+          ref: ${{ github.event.inputs.branch }}
           job-config: ${{ matrix.config.job-config }}
           token: ${{ secrets.RHUB_TOKEN }}
       - uses: r-hub/actions/platform-info@v1

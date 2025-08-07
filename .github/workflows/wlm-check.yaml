@@ -2,9 +2,7 @@ name: wlm-check
 
 on:
   push:
-    branches: [ tagteam ]
   pull_request:
-    branches: [ tagteam ]
 
 jobs:
   R-CMD-check:
