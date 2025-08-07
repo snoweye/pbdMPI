@@ -52,12 +52,12 @@ jobs:
     - name: Verify MPI installation (Linux/Fedora)
       if: runner.os == 'Linux'
       run: |
-        mpiexec --version
-        mpicc -showme:incdirs
-        mpicc -showme:libdirs
-        mpicc -showme:compile
-        mpicc -showme:link
-        mpiexec -np 2 hostname
+        sudo -u nobody mpiexec --version
+        sudo -u nobody mpicc -showme:incdirs
+        sudo -u nobody mpicc -showme:libdirs
+        sudo -u nobody mpicc -showme:compile
+        sudo -u nobody mpicc -showme:link
+        sudo -u nobody mpiexec -np 2 hostname
     
     # Windows MS-MPI setup
     - name: Install MS-MPI (Windows)

@@ -95,9 +95,34 @@ jobs:
         run: brew install open-mpi
       ###
       # Install MPI (MS-MPI) for Windows
-      - name: Install MPI (MS-MPI)
+    
+      # Windows MS-MPI setup
+      - name: Install MS-MPI (Windows)
         if: runner.os == 'Windows'
-        run: choco install msmpi
+        run: |
+          # Download and install MS-MPI runtime
+          Invoke-WebRequest -Uri "https://github.com/microsoft/Microsoft-MPI/releases/download/v10.1.1/msmpisetup.exe" -OutFile msmpisetup.exe
+          Start-Process -Wait -FilePath .\msmpisetup.exe -ArgumentList "-unattend"
+        
+          # Download and install MS-MPI SDK
+          Invoke-WebRequest -Uri "https://github.com/microsoft/Microsoft-MPI/releases/download/v10.1.1/msmpisdk.msi" -OutFile msmpisdk.msi  
+          Start-Process -Wait -FilePath msiexec -ArgumentList "/i msmpisdk.msi /quiet"
+        
+          # Set environment variables
+          echo "MSMPI_ROOT=C:\Program Files\Microsoft MPI" >> $env:GITHUB_ENV
+          echo "MSMPI_LIB32=C:\Program Files\Microsoft MPI\Lib\x86" >> $env:GITHUB_ENV
+          echo "MSMPI_LIB64=C:\Program Files\Microsoft MPI\Lib\x64" >> $env:GITHUB_ENV
+          echo "MSMPI_INC=C:\Program Files\Microsoft MPI\Include" >> $env:GITHUB_ENV
+          echo "PATH=$env:PATH;C:\Program Files\Microsoft MPI\Bin" >> $env:GITHUB_ENV
+        shell: powershell
+    
+      - name: Verify MS-MPI installation (Windows)
+        if: runner.os == 'Windows'
+        run: |
+          Get-Command mpiexec
+          mpiexec -help
+        shell: powershell
+
       ###
       - uses: r-hub/actions/run-check@v1
         with:
