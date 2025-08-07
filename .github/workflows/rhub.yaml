@@ -107,7 +107,11 @@ jobs:
           # Download and install MS-MPI SDK
           Invoke-WebRequest -Uri "https://github.com/microsoft/Microsoft-MPI/releases/download/v10.1.1/msmpisdk.msi" -OutFile msmpisdk.msi  
           Start-Process -Wait -FilePath msiexec -ArgumentList "/i msmpisdk.msi /quiet"
-        
+
+          # Clean up installer files
+          Remove-Item msmpisetup.exe -Force
+          Remove-Item msmpisdk.msi -Force
+  
           # Set environment variables
           echo "MSMPI_ROOT=C:\Program Files\Microsoft MPI" >> $env:GITHUB_ENV
           echo "MSMPI_LIB32=C:\Program Files\Microsoft MPI\Lib\x86" >> $env:GITHUB_ENV
