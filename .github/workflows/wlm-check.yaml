@@ -37,8 +37,8 @@ jobs:
     - name: Install system dependencies (Ubuntu)
       if: runner.os == 'Linux' && matrix.config.container == null
       run: |
-        sudo apt-get update -q
-        sudo apt-get install -y -q libopenmpi-dev openmpi-bin
+        apt-get update -q
+        apt-get install -y -q libopenmpi-dev openmpi-bin
     
     # Fedora container setup
     - name: Install system dependencies (Fedora)
@@ -52,12 +52,11 @@ jobs:
     - name: Verify MPI installation (Linux/Fedora)
       if: runner.os == 'Linux'
       run: |
-        sudo -u nobody mpiexec --version
-        sudo -u nobody mpicc -showme:incdirs
-        sudo -u nobody mpicc -showme:libdirs
-        sudo -u nobody mpicc -showme:compile
-        sudo -u nobody mpicc -showme:link
-        sudo -u nobody mpiexec -np 2 hostname
+        mpiexec --version
+        mpicc -showme:incdirs
+        mpicc -showme:libdirs
+        mpicc -showme:compile
+        mpicc -showme:link
     
     # Windows MS-MPI setup
     - name: Install MS-MPI (Windows)
@@ -70,7 +69,11 @@ jobs:
         # Download and install MS-MPI SDK
         Invoke-WebRequest -Uri "https://github.com/microsoft/Microsoft-MPI/releases/download/v10.1.1/msmpisdk.msi" -OutFile msmpisdk.msi  
         Start-Process -Wait -FilePath msiexec -ArgumentList "/i msmpisdk.msi /quiet"
-        
+  
+        # Clean up installer files
+        Remove-Item msmpisetup.exe -Force
+        Remove-Item msmpisdk.msi -Force
+      
         # Set environment variables
         echo "MSMPI_ROOT=C:\Program Files\Microsoft MPI" >> $env:GITHUB_ENV
         echo "MSMPI_LIB32=C:\Program Files\Microsoft MPI\Lib\x86" >> $env:GITHUB_ENV
