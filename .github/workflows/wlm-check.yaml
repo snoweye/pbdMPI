@@ -46,8 +46,7 @@ jobs:
       run: |
         dnf update -y
         dnf install -y R openmpi-devel which
-        echo "LD_PRELOAD=/usr/lib64/openmpi/lib/libmpi.so" >> $GITHUB_ENV
-    
+      
     # Verify MPI installation (Linux/Fedora)
     - name: Verify MPI installation (Linux/Fedora)
       if: runner.os == 'Linux'
