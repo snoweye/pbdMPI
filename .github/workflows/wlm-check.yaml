@@ -39,6 +39,7 @@ jobs:
       run: |
         sudo apt-get update -q
         sudo apt-get install -y -q libopenmpi-dev openmpi-bin
+        echo "/usr/lib64/openmpi/bin" >> $GITHUB_PATH
     
     # Fedora container setup
     - name: Install system dependencies (Fedora)
