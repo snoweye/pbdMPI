@@ -94,9 +94,8 @@ jobs:
         if: runner.os == 'macOS'
         run: brew install open-mpi
       ###
-      # Install MPI (MS-MPI) for Windows
-    
-      # Windows MS-MPI setup
+
+      # Install MPI (MS-MPI) for Windows 
       - name: Install MS-MPI (Windows)
         if: runner.os == 'Windows'
         run: |
@@ -126,7 +125,6 @@ jobs:
           Get-Command mpiexec
           mpiexec -help
         shell: powershell
-
       ###
       - uses: r-hub/actions/run-check@v1
         with:

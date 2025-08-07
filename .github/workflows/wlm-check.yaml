@@ -37,8 +37,8 @@ jobs:
     - name: Install system dependencies (Ubuntu)
       if: runner.os == 'Linux' && matrix.config.container == null
       run: |
-        apt-get update -q
-        apt-get install -y -q libopenmpi-dev openmpi-bin
+        sudo apt-get update -q
+        sudo apt-get install -y -q libopenmpi-dev openmpi-bin
     
     # Fedora container setup
     - name: Install system dependencies (Fedora)
