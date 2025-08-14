@@ -58,10 +58,6 @@ jobs:
 
     steps:
       - uses: r-hub/actions/checkout@v1
-      - name: Install LaTeX
-        run: |
-          apt-get update
-          apt-get install -y texlive-latex-base texlive-latex-recommended texlive-latex-extra texlive-fonts-recommended
       - uses: r-hub/actions/platform-info@v1
         with:
           ref: ${{ github.event.inputs.branch }}
