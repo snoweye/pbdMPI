@@ -6,12 +6,4 @@ appveyor.yml
 ^doc$
 ^Meta$
 ^__George
-^\.github$
 ^vignettes
-^doc$
-^Meta$
-^__George
-
-^doc$
-^Meta$
-^__George
