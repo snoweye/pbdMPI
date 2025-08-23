@@ -34,6 +34,7 @@ spmd.gather.array <- function(x,
   n.dim <- length(dim(x))
   COMM.SIZE <- spmd.comm.size(comm)
 
+  ## Check for double array and gather if so
   all.check <- spmd.allreduce.integer(
                  as.integer(is.double(x) && length(x) > 0),
                  integer(1), op = "sum", comm = comm) == COMM.SIZE
@@ -60,6 +61,7 @@ spmd.gather.array <- function(x,
     return(ret)
   }
 
+  ## Check for integer array and gather if so
   all.check <- spmd.allreduce.integer(
                  as.integer(is.integer(x) && length(x) > 0),
                  integer(1), op = "sum", comm = comm) == COMM.SIZE

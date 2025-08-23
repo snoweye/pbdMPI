@@ -34,6 +34,7 @@
 \alias{spmd.comm.rank}
 \alias{spmd.comm.localrank}
 \alias{spmd.comm.size}
+\alias{spmd.comm.decor}
 \alias{spmd.comm.dup}
 \alias{spmd.comm.free}
 \alias{spmd.init}
@@ -60,6 +61,7 @@
 \alias{spmd.gather.array}
 \alias{spmd.gather.default}
 \alias{spmd.gatherv.default}
+\alias{spmd.gather.data.frame}
 \alias{spmd.gather.integer}
 \alias{spmd.gather.double}
 \alias{spmd.gather.raw}
