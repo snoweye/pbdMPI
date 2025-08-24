@@ -1,23 +1,14 @@
 ### Tool functions.
 
-spmd.hostinfo <- function(comm = .pbd_env$SPMD.CT$comm) {
-  if (spmd.comm.size(comm) == 0) {
+spmd.hostinfo <- function(comm = .pbd_env$SPMD.CT$comm){
+  if (spmd.comm.size(comm) == 0){
     stop(paste("It seems no members running on comm", comm))
   }
   HOST.NAME <- spmd.get.processor.name()
   COMM.RANK <- spmd.comm.rank(comm)
   COMM.SIZE <- spmd.comm.size(comm)
-  cat(
-    "\tHost:",
-    HOST.NAME,
-    "\tRank(ID):",
-    COMM.RANK,
-    "\tof Size:",
-    COMM.SIZE,
-    "on comm",
-    comm,
-    "\n"
-  )
+  cat("\tHost:", HOST.NAME, "\tRank(ID):", COMM.RANK, "\tof Size:", COMM.SIZE,
+      "on comm",    comm,    "\n")
   invisible()
 } # End of spmd.hostinfo().
 
