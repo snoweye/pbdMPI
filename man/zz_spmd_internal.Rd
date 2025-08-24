@@ -61,7 +61,6 @@
 \alias{spmd.gather.array}
 \alias{spmd.gather.default}
 \alias{spmd.gatherv.default}
-\alias{spmd.gather.data.frame}
 \alias{spmd.gather.integer}
 \alias{spmd.gather.double}
 \alias{spmd.gather.raw}
