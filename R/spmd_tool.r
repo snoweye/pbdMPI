@@ -44,11 +44,10 @@ spmd.comm.print <- function(x, all.rank = .pbd_env$SPMD.CT$print.all.rank,
     quiet = .pbd_env$SPMD.CT$print.quiet,
     flush = .pbd_env$SPMD.CT$msg.flush,
     barrier = .pbd_env$SPMD.CT$msg.barrier, con = stdout(), sleep = 0, ...){
-  
     COMM.RANK <- spmd.comm.rank(comm)
     COMM.SIZE <- spmd.comm.size(comm)
 
-  ## Don't print "COMM.RANK = " even if verbose=TRUE in the case 'x' is invalid
+  # Don't print "COMM.RANK = " even if verbose=TRUE in the case 'x' is invalid
   if (!exists(deparse(substitute(x))))
     quiet <- TRUE
 
@@ -65,14 +64,14 @@ spmd.comm.print <- function(x, all.rank = .pbd_env$SPMD.CT$print.all.rank,
 
   ## If several ranks print, use distributed tag-team
   rank.print <- unique(rank.print) # duplicates would deadlock!
-  if (all.rank) {
+  if(all.rank){
     rank.print <- 0L:(COMM.SIZE - 1L)
   }
   rank.pos <- match(COMM.RANK, rank.print)
-  if (!is.na(rank.pos)) {
+  if(!is.na(rank.pos)){
     # my rank prints
 
-    if (rank.pos > 1L) {
+    if(rank.pos > 1L){
       # not first, so post a blocking receive from previous
       recv(rank.source = rank.print[rank.pos - 1L], comm = comm)
     }
@@ -82,11 +81,11 @@ spmd.comm.print <- function(x, all.rank = .pbd_env$SPMD.CT$print.all.rank,
     cat(d[1L], sep = "")
     print(x, ...)
     cat(d[2L], sep = "")
-    if (flush) {
+    if(flush){
       flush(con)
     }
 
-    if (rank.pos < length(rank.print)) {
+    if(rank.pos < length(rank.print)){
       # not last, so release next print rank
       send(integer(0L), rank.dest = rank.print[rank.pos + 1L], comm = comm)
     }
