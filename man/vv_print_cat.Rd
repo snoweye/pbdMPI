@@ -44,7 +44,8 @@ comm.cat(..., all.rank = .pbd_env$SPMD.CT$print.all.rank,
   \item{barrier}{if barrier \code{con}.}
   \item{con}{\code{stdout()} is the default to print message.}
   \item{sleep}{Normally left at 0. If overprinting by ranks occurrs, set to
-    0.01 or smaller to delay the first printing rank action.}
+    0.01 or smaller to delay the first printing rank action and allow any previous
+    print to land.}
 }
 \details{
   \strong{Warning:} These two functions use \code{barrier()} to make sure
