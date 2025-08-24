@@ -40,12 +40,12 @@ spmd.comm.decor <- function(quiet, comm = .pbd_env$SPMD.CT$comm) {
 }
 
 spmd.comm.print <- function(x, all.rank = .pbd_env$SPMD.CT$print.all.rank,
-  rank.print = .pbd_env$SPMD.CT$rank.source, comm = .pbd_env$SPMD.CT$comm,
-  quiet = .pbd_env$SPMD.CT$print.quiet,
-  flush = .pbd_env$SPMD.CT$msg.flush,
-  barrier = .pbd_env$SPMD.CT$msg.barrier, con = stdout(), sleep = 0, ...){
-  COMM.RANK <- spmd.comm.rank(comm)
-  COMM.SIZE <- spmd.comm.size(comm)
+    rank.print = .pbd_env$SPMD.CT$rank.source, comm = .pbd_env$SPMD.CT$comm,
+    quiet = .pbd_env$SPMD.CT$print.quiet,
+    flush = .pbd_env$SPMD.CT$msg.flush,
+    barrier = .pbd_env$SPMD.CT$msg.barrier, con = stdout(), sleep = 0, ...){
+    COMM.RANK <- spmd.comm.rank(comm)
+    COMM.SIZE <- spmd.comm.size(comm)
 
   ## Don't print "COMM.RANK = " if 'x' is invalid
   if (!exists(deparse(substitute(x)))) {
