@@ -3,7 +3,6 @@
 
 \alias{gather-methods}
 
-\alias{gather,data.frame,missing,missing-method}
 \alias{gather,ANY,missing,missing-method}
 \alias{gather,integer,integer,missing-method}
 \alias{gather,numeric,numeric,missing-method}
