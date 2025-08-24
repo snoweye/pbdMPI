@@ -90,6 +90,7 @@ spmd.comm.print <- function(x, all.rank = .pbd_env$SPMD.CT$print.all.rank,
       send(integer(0L), rank.dest = rank.print[rank.pos + 1L], comm = comm)
     }
   }
+  invisible()
 } # End of spmd.comm.print().
 
 comm.print <- spmd.comm.print
