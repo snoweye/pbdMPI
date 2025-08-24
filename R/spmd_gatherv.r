@@ -17,6 +17,7 @@ spmd.gather.default <- function(x, x.buffer = NULL, x.count = NULL,
 
 spmd.gatherv.default <- spmd.gather.default
 
+
 ### For gather and basic types.
 spmd.gather.integer <- function(x, x.buffer, x.count = NULL, displs = NULL,
     rank.dest = .pbd_env$SPMD.CT$rank.root, comm = .pbd_env$SPMD.CT$comm,
