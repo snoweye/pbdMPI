@@ -1,14 +1,14 @@
 ### Tool functions.
 
 spmd.hostinfo <- function(comm = .pbd_env$SPMD.CT$comm){
-  if (spmd.comm.size(comm) == 0){
+  if(spmd.comm.size(comm) == 0){
     stop(paste("It seems no members running on comm", comm))
   }
   HOST.NAME <- spmd.get.processor.name()
   COMM.RANK <- spmd.comm.rank(comm)
   COMM.SIZE <- spmd.comm.size(comm)
   cat("\tHost:", HOST.NAME, "\tRank(ID):", COMM.RANK, "\tof Size:", COMM.SIZE,
-      "on comm",    comm,    "\n")
+      "on comm", comm, "\n")
   invisible()
 } # End of spmd.hostinfo().
 
@@ -39,18 +39,11 @@ spmd.comm.decor <- function(quiet, comm = .pbd_env$SPMD.CT$comm) {
   c(prefix, postfix)
 }
 
-spmd.comm.print <- function(
-  x,
-  all.rank = .pbd_env$SPMD.CT$print.all.rank,
-  rank.print = .pbd_env$SPMD.CT$rank.source,
-  comm = .pbd_env$SPMD.CT$comm,
+spmd.comm.print <- function(x, all.rank = .pbd_env$SPMD.CT$print.all.rank,
+  rank.print = .pbd_env$SPMD.CT$rank.source, comm = .pbd_env$SPMD.CT$comm,
   quiet = .pbd_env$SPMD.CT$print.quiet,
   flush = .pbd_env$SPMD.CT$msg.flush,
-  barrier = .pbd_env$SPMD.CT$msg.barrier,
-  con = stdout(),
-  sleep = 0,
-  ...
-) {
+  barrier = .pbd_env$SPMD.CT$msg.barrier, con = stdout(), sleep = 0, ...){
   COMM.RANK <- spmd.comm.rank(comm)
   COMM.SIZE <- spmd.comm.size(comm)
 
@@ -102,41 +95,31 @@ spmd.comm.print <- function(
 
 comm.print <- spmd.comm.print
 
-spmd.comm.cat <- function(
-  ...,
-  all.rank = .pbd_env$SPMD.CT$print.all.rank,
-  rank.print = .pbd_env$SPMD.CT$rank.source,
-  comm = .pbd_env$SPMD.CT$comm,
-  quiet = .pbd_env$SPMD.CT$print.quiet,
-  sep = " ",
-  fill = FALSE,
-  labels = NULL,
-  append = FALSE,
-  flush = .pbd_env$SPMD.CT$msg.flush,
-  barrier = .pbd_env$SPMD.CT$msg.barrier,
-  con = stdout(),
-  sleep = 0
-) {
+spmd.comm.cat <- function(..., all.rank = .pbd_env$SPMD.CT$print.all.rank,
+  rank.print = .pbd_env$SPMD.CT$rank.source, comm = .pbd_env$SPMD.CT$comm,
+  quiet = .pbd_env$SPMD.CT$print.quiet, sep = " ", fill = FALSE,
+  labels = NULL, append = FALSE, flush = .pbd_env$SPMD.CT$msg.flush,
+  barrier = .pbd_env$SPMD.CT$msg.barrier, con = stdout(), sleep = 0){
   COMM.RANK <- spmd.comm.rank(comm)
   COMM.SIZE <- spmd.comm.size(comm)
 
-  if (COMM.RANK == 0L && sleep > 0) {
+  if(COMM.RANK == 0L && sleep > 0){
     Sys.sleep(sleep)
   } # give last cat time to land
-  if (barrier) {
+  if(barrier){
     spmd.barrier(comm)
   }
 
   ## If several ranks print, use distributed tag-team
   rank.print <- unique(rank.print) # duplicates would deadlock!
-  if (all.rank) {
+  if(all.rank){
     rank.print <- 0L:(COMM.SIZE - 1L)
   }
   rank.pos <- match(COMM.RANK, rank.print)
-  if (!is.na(rank.pos)) {
+  if(!is.na(rank.pos)){
     # my rank prints
 
-    if (rank.pos > 1L) {
+    if(rank.pos > 1L){
       # not first, so post a blocking receive from previous
       recv(rank.source = rank.print[rank.pos - 1L], comm = comm)
     }
@@ -150,7 +133,7 @@ spmd.comm.cat <- function(
       flush(con)
     }
 
-    if (rank.pos < length(rank.print)) {
+    if(rank.pos < length(rank.print)){
       # not last, so release next print rank
       send(integer(0L), rank.dest = rank.print[rank.pos + 1L], comm = comm)
     }
