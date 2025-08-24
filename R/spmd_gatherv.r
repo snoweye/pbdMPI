@@ -17,30 +17,6 @@ spmd.gather.default <- function(x, x.buffer = NULL, x.count = NULL,
 
 spmd.gatherv.default <- spmd.gather.default
 
-#' Gathers a data frame split by row blocks across ranks.
-#' 
-#' The gather is performed by a `do.call`'ed `gather` on individual columns of 
-#' the data frame. Rownames are not preserved. Assign an additional character
-#' column to preserve rownames.
-#' 
-spmd.gather.data.frame <- function(x, x.buffer = NULL, x.count = NULL,
-    displs = NULL, rank.dest = .pbd_env$SPMD.CT$rank.root,
-    comm = .pbd_env$SPMD.CT$comm, unlist = .pbd_env$SPMD.CT$unlist){
-  ret <- do.call(c, 
-                 lapply(x, function(x){
-                   ## TODO consider unserialized class(x) methods here
-                   ## TODO consider single check and reduce sum for all
-    spmd.gather.default(x, rank.dest = rank.dest, comm = comm, unlist = unlist)
-  }
-  ))
-  if(spmd.comm.rank(comm) != rank.dest){
-    return(invisible())
-  }
-  ret = as.data.frame(ret)
-  names(ret) <- names(x)
-  ret
-} # End of spmd.gather.data.frame().
-
 ### For gather and basic types.
 spmd.gather.integer <- function(x, x.buffer, x.count = NULL, displs = NULL,
     rank.dest = .pbd_env$SPMD.CT$rank.root, comm = .pbd_env$SPMD.CT$comm,
@@ -121,13 +97,6 @@ setGeneric(
 )
 
 ### For gather.
-setMethod(
-  f = "gather",
-  signature = signature(x = "data.frame",
-                        x.buffer = "missing",
-                        x.count = "missing"),
-  definition = spmd.gather.data.frame
-)
 setMethod(
   f = "gather",
   signature = signature(x = "ANY",
