@@ -99,46 +99,46 @@ spmd.comm.cat <- function(..., all.rank = .pbd_env$SPMD.CT$print.all.rank,
     quiet = .pbd_env$SPMD.CT$print.quiet, sep = " ", fill = FALSE,
     labels = NULL, append = FALSE, flush = .pbd_env$SPMD.CT$msg.flush,
     barrier = .pbd_env$SPMD.CT$msg.barrier, con = stdout(), sleep = 0){
-  COMM.RANK <- spmd.comm.rank(comm)
-  COMM.SIZE <- spmd.comm.size(comm)
+    COMM.RANK <- spmd.comm.rank(comm)
+    COMM.SIZE <- spmd.comm.size(comm)
 
-  if(COMM.RANK == 0L && sleep > 0){
-    Sys.sleep(sleep)
-  } # give last cat time to land
-  if(barrier){
-    spmd.barrier(comm)
-  }
-
-  ## If several ranks print, use distributed tag-team
-  rank.print <- unique(rank.print) # duplicates would deadlock!
-  if(all.rank){
-    rank.print <- 0L:(COMM.SIZE - 1L)
-  }
-  rank.pos <- match(COMM.RANK, rank.print)
-  if(!is.na(rank.pos)){
-    # my rank prints
-
-    if(rank.pos > 1L){
-      # not first, so post a blocking receive from previous
-      recv(rank.source = rank.print[rank.pos - 1L], comm = comm)
+    if(COMM.RANK == 0L && sleep > 0){
+      Sys.sleep(sleep)
+    } # give last cat time to land
+    if(barrier){
+      spmd.barrier(comm)
     }
 
-    ## Print with decorations if requested
-    d <- spmd.comm.decor(quiet, comm)
-    cat(d[1L], sep = "", fill = fill, labels = labels, append = append)
-    cat(..., sep = sep, fill = fill, labels = labels, append = append)
-    cat(d[2L], sep = "", fill = fill, labels = labels, append = append)
-    if(flush){
-      flush(con)
+    ## If several ranks print, use distributed tag-team
+    rank.print <- unique(rank.print) # duplicates would deadlock!
+    if(all.rank){
+      rank.print <- 0L:(COMM.SIZE - 1L)
+    }
+    rank.pos <- match(COMM.RANK, rank.print)
+    if(!is.na(rank.pos)){
+      # my rank prints
+
+      if(rank.pos > 1L){
+        # not first, so post a blocking receive from previous
+        recv(rank.source = rank.print[rank.pos - 1L], comm = comm)
+      }
+
+      ## Print with decorations if requested
+      d <- spmd.comm.decor(quiet, comm)
+      cat(d[1L], sep = "", fill = fill, labels = labels, append = append)
+      cat(..., sep = sep, fill = fill, labels = labels, append = append)
+      cat(d[2L], sep = "", fill = fill, labels = labels, append = append)
+      if(flush){
+        flush(con)
+      }
+
+      if(rank.pos < length(rank.print)){
+        # not last, so release next print rank
+        send(integer(0L), rank.dest = rank.print[rank.pos + 1L], comm = comm)
+      }
     }
 
-    if(rank.pos < length(rank.print)){
-      # not last, so release next print rank
-      send(integer(0L), rank.dest = rank.print[rank.pos + 1L], comm = comm)
-    }
-  }
-
-  invisible()
+    invisible()
 } # End of spmd.comm.cat().
 
 comm.cat <- spmd.comm.cat
