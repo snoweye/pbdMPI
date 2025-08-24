@@ -15,12 +15,19 @@ spmd.hostinfo <- function(comm = .pbd_env$SPMD.CT$comm){
 #' Constructs text color decorations for spmd.comm.cat() and spmd.comm.print().
 #'
 #' @param quiet
-#' Logical or integer to control rank-coloring. If logical, no
-#' coloring is done. If integer, up to 8 colors are used to distinguish ranks.
-#' If there are more ranks than colors, colors are recycled.
-#' This is accomplished by prepending ANSI text color codes and post-pending
-#' color reset. This is particularly useful in debugging situatons using
-#' `all.rank = TRUE`.
+#' Logical to control whether whether a "COMM.RANK = #" line is added to 
+#' indicate which rank is printing, or integer to do rank-coloring instead. If 
+#' integer, giving a communicator number, up to 8 colors are used to distinguish 
+#' each rank's prints. If the specified communicator has more than 8 ranks, 
+#' colors are recycled. 
+#' 
+#' With a single communicator, this is straightforward. This can be extremely 
+#' helpful in debugging complex communicator splits. In these cases, the 
+#' parameter `comm` below can be different from the split communicator assigned 
+#' to `quiet`.
+#' 
+#' Color is accomplished by pre-pending ANSI text color codes and post-pending
+#' a color reset. 
 #' @param comm
 #' The communicator to be used for coloring.
 #'
@@ -37,7 +44,7 @@ spmd.comm.decor <- function(quiet, comm = .pbd_env$SPMD.CT$comm) {
     postfix <- "\033[0m" # reset color
   }
   c(prefix, postfix)
-}
+} # End of spmd.comm.decor().
 
 spmd.comm.print <- function(x, all.rank = .pbd_env$SPMD.CT$print.all.rank,
     rank.print = .pbd_env$SPMD.CT$rank.source, comm = .pbd_env$SPMD.CT$comm,
