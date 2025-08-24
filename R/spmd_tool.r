@@ -44,13 +44,13 @@ spmd.comm.print <- function(x, all.rank = .pbd_env$SPMD.CT$print.all.rank,
     quiet = .pbd_env$SPMD.CT$print.quiet,
     flush = .pbd_env$SPMD.CT$msg.flush,
     barrier = .pbd_env$SPMD.CT$msg.barrier, con = stdout(), sleep = 0, ...){
+  
     COMM.RANK <- spmd.comm.rank(comm)
     COMM.SIZE <- spmd.comm.size(comm)
 
-  ## Don't print "COMM.RANK = " if 'x' is invalid
-  if (!exists(deparse(substitute(x)))) {
+  ## Don't print "COMM.RANK = " even if verbose=TRUE in the case 'x' is invalid
+  if (!exists(deparse(substitute(x))))
     quiet <- TRUE
-  }
 
   ## Barrier released by rank 0 after COMM.SIZE check-ins. Will this break in
   ## sub-comm grids? No, because sub-comms are disjoint.
@@ -59,7 +59,7 @@ spmd.comm.print <- function(x, all.rank = .pbd_env$SPMD.CT$print.all.rank,
   if (COMM.RANK == 0L && sleep > 0) {
     Sys.sleep(sleep)
   } # give last cat time to land
-  if (barrier) {
+  if (barrier){
     spmd.barrier(comm)
   }
 
@@ -96,10 +96,10 @@ spmd.comm.print <- function(x, all.rank = .pbd_env$SPMD.CT$print.all.rank,
 comm.print <- spmd.comm.print
 
 spmd.comm.cat <- function(..., all.rank = .pbd_env$SPMD.CT$print.all.rank,
-  rank.print = .pbd_env$SPMD.CT$rank.source, comm = .pbd_env$SPMD.CT$comm,
-  quiet = .pbd_env$SPMD.CT$print.quiet, sep = " ", fill = FALSE,
-  labels = NULL, append = FALSE, flush = .pbd_env$SPMD.CT$msg.flush,
-  barrier = .pbd_env$SPMD.CT$msg.barrier, con = stdout(), sleep = 0){
+    rank.print = .pbd_env$SPMD.CT$rank.source, comm = .pbd_env$SPMD.CT$comm,
+    quiet = .pbd_env$SPMD.CT$print.quiet, sep = " ", fill = FALSE,
+    labels = NULL, append = FALSE, flush = .pbd_env$SPMD.CT$msg.flush,
+    barrier = .pbd_env$SPMD.CT$msg.barrier, con = stdout(), sleep = 0){
   COMM.RANK <- spmd.comm.rank(comm)
   COMM.SIZE <- spmd.comm.size(comm)
 
@@ -129,7 +129,7 @@ spmd.comm.cat <- function(..., all.rank = .pbd_env$SPMD.CT$print.all.rank,
     cat(d[1L], sep = "", fill = fill, labels = labels, append = append)
     cat(..., sep = sep, fill = fill, labels = labels, append = append)
     cat(d[2L], sep = "", fill = fill, labels = labels, append = append)
-    if (flush) {
+    if(flush){
       flush(con)
     }
 
