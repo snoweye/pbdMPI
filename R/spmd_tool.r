@@ -44,8 +44,8 @@ spmd.comm.print <- function(x, all.rank = .pbd_env$SPMD.CT$print.all.rank,
     quiet = .pbd_env$SPMD.CT$print.quiet,
     flush = .pbd_env$SPMD.CT$msg.flush,
     barrier = .pbd_env$SPMD.CT$msg.barrier, con = stdout(), sleep = 0, ...){
-    COMM.RANK <- spmd.comm.rank(comm)
-    COMM.SIZE <- spmd.comm.size(comm)
+  COMM.RANK <- spmd.comm.rank(comm)
+  COMM.SIZE <- spmd.comm.size(comm)
 
   # Don't print "COMM.RANK = " even if verbose=TRUE in the case 'x' is invalid
   if (!exists(deparse(substitute(x))))
