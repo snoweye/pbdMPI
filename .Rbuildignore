@@ -4,6 +4,3 @@ appveyor.yml
 ^\.Rproj\.user$
 ^\.github$
 ^vignettes
-^doc$
-^Meta$
-^__George
