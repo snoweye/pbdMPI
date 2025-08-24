@@ -28,7 +28,14 @@ comm.cat(..., all.rank = .pbd_env$SPMD.CT$print.all.rank,
   \item{all.rank}{if all ranks print (default = FALSE).}
   \item{rank.print}{rank for printing if not all ranks print (default = 0).}
   \item{comm}{communicator for printing (default = 1).}
-  \item{quiet}{FALSE for printing rank number.}
+  \item{quiet}{Logical to control whether whether a "COMM.RANK = #" line is
+   added to indicate which rank is printing, or integer to do rank-coloring 
+   instead. If integer, giving a communicator number, up to 8 colors are used
+   to distinguish each rank's prints. If the specified communicator has more 
+   than 8 ranks, colors are recycled. With a single communicator, this is 
+   straightforward. This can be extremely helpful in debugging complex communicator
+   splits. In these cases, the parameter `comm` below can be different from the 
+   split communicator assigned to `quiet`.}
   \item{sep}{sep argument as in the \code{cat()} function.}
   \item{fill}{fill argument as in the \code{cat()} function.}
   \item{labels}{labels argument as in the \code{cat()} function.}
